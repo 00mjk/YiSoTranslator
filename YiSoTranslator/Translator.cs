@@ -36,8 +36,10 @@
             LanguageSetting.CurrentLanguageChanged += Setting_CurrentLanguageChanged;
             LanguageSetting.DefaultLanguageChanged += Setting_DefaultLanguageChanged;
             TranslationsManager.TranslationsGroupsListChanged += Manager_ListChanged;
+            TranslationsManager.TranslationsListChanged += TranslationsManager_TranslationsListChanged; ;
+            TranslationsManager.DataSourceChanged += TranslationsManager_DataSourceChanged; ;
         }
-
+        
         #endregion
 
         #region Events
@@ -57,6 +59,16 @@
         /// </summary>
         public event EventHandler<TranslationsGroupsListChangedEventArgs> TranslationGroupsListChanged;
 
+        /// <summary>
+        /// Event Raised when the Translations List Changed
+        /// </summary>
+        public event EventHandler<TranslationListChangedEventArgs> TranslationsListChanged;
+
+        /// <summary>
+        /// Event Raised when the Data Source Changed
+        /// </summary>
+        public event EventHandler<DataSourceChangedEventArgs> DataSourceChanged;
+
         private void Setting_DefaultLanguageChanged(object sender, LanguageChangedEventArgs e)
         {
             DefaultLanguageChanged?.Invoke(sender, e);
@@ -70,6 +82,16 @@
         private void Manager_ListChanged(object sender, TranslationsGroupsListChangedEventArgs e)
         {
             TranslationGroupsListChanged?.Invoke(sender, e);
+        }
+
+        private void TranslationsManager_DataSourceChanged(object sender, DataSourceChangedEventArgs e)
+        {
+            DataSourceChanged?.Invoke(sender, e);
+        }
+
+        private void TranslationsManager_TranslationsListChanged(object sender, TranslationListChangedEventArgs e)
+        {
+            TranslationsListChanged?.Invoke(sender, e);
         }
 
         #endregion

@@ -42,12 +42,12 @@
         /// <summary>
         /// Event Raised when the Translations List Changed
         /// </summary>
-        event EventHandler<TranslationListChangedEventArgs> TranslationsListChanged;
+        public event EventHandler<TranslationListChangedEventArgs> TranslationsListChanged;
 
         /// <summary>
         /// Event Raised when the Data Source Changed
         /// </summary>
-        event EventHandler<DataSourceChangedEventArgs> DataSourceChanged;
+        public event EventHandler<DataSourceChangedEventArgs> DataSourceChanged;
 
         #endregion
 
