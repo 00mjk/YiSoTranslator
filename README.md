@@ -91,7 +91,7 @@ private void AddTranslations()
 "Translator" expose a property which is of type "TranslationGroupManager" allowing to manage the list of the translations, so that you can add translation Groups and the there translations, once you finish you can call the SaveChanges()Method on the Manager property to save the the changes.
 
 ## Tools For the plugin
-We have created simple Code snippets that you can use to make your coding faster, which you can download from here: [Click here](https://github.com/youssefSel/YiSoTranslator/raw/master/YiSoTranslator%20Snippets.zip)  
+We have created simple Code snippets that you can use to make your coding faster, which you can download from here: [Click here](https://github.com/YoussefSell/YiSoTranslator/raw/master/YiSoTranslator%20Snippets.zip.zip)  
 
 ## Getting Started
 add the YiSoTranslator package to your project by using he nuget package manager or nuget package manager console:  
