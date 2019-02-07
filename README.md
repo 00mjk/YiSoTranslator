@@ -11,7 +11,7 @@ the translation are wrapped inside a `TranslationsGroup` Object, this object hav
   - "LanguageCode" which hold the the code of the language of the translation.
   - "Value" which represent the actual translation.
 
-the first translation in the list is you default language. if no translation found for a given language the plugin will return the value of the default language, and if you didn't specified the default language the plugin will throw an exception.
+the first translation in the list is your default language. if no translation found for a given language the plugin will return the value of the default language, and if you didn't specified the default language the plugin will throw an exception.
 
 if the given translation name not found an exception will be thrown, also if you add a translation group name which already exist an exception will be thrown.
   
@@ -25,7 +25,7 @@ to start using the Translator first you need to config your `LanguageSettings`, 
 
   private static Language GetDefaultLanguage()
   {
-    //ToDo : implement your own logic for retrieving the Current language
+    //ToDo : implement your own logic for retrieving the Default language
     return Language.GetByEnum(Languages.English_UnitedStates);
   }
 
