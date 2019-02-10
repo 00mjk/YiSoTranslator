@@ -52,10 +52,5 @@ namespace YiSoTranslator.Test
                 tg
             };
         }
-
-        internal void Dispose()
-        {
-            
-        }
     }
 }

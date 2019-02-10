@@ -11,7 +11,7 @@
         /// <summary>
         /// return the list of translations from the dataSource
         /// </summary>
-        IEnumerable<TranslationsGroup> TranslationsGroupList { get; }
+        IEnumerable<TranslationsGroup> TranslationsGroupsList { get; }
 
         /// <summary>
         /// the count of the items in the list
@@ -24,41 +24,44 @@
         event EventHandler<TranslationsGroupsListChangedEventArgs> TranslationsGroupsListChanged;
 
         /// <summary>
-        /// Event Raised when the Translations List Changed
-        /// </summary>
-        event EventHandler<TranslationListChangedEventArgs> TranslationsListChanged;
-
-        /// <summary>
         /// Event Raised when the Data Source Changed
         /// </summary>
         event EventHandler<DataSourceChangedEventArgs> DataSourceChanged;
 
         /// <summary>
-        /// Add the translation group to the list
+        /// Add the translations group to the list
         /// </summary>
-        /// <param name="translationGroup">translation group to be added</param>
-        TranslationsGroup Add(TranslationsGroup translationGroup);
+        /// <param name="translationsGroup">translation group to be added</param>
+        TranslationsGroup Add(TranslationsGroup translationsGroup);
 
         /// <summary>
-        /// Add the translation groups to the list
+        /// Add the translations groups to the list
         /// </summary>
-        /// <param name="translationGroups">translation groups to be added</param>
-        void AddRange(IEnumerable<TranslationsGroup> translationGroups);
+        /// <param name="translationsGroups">translation groups to be added</param>
+        void AddRange(params TranslationsGroup[] translationsGroups);
 
         /// <summary>
         /// update the old TranslationGroup name with the new name
         /// </summary>
-        /// <param name="oldTranslationGroupName">the old translation Croup name</param>
-        /// <param name="newTranslationGroupName">the new translation Group</param>
+        /// <param name="oldTranslationsGroupName">the old translation Croup name</param>
+        /// <param name="newTranslationsGroupName">the new translation Group</param>
         /// <returns>the updated TranslationGroup</returns>
-        TranslationsGroup Update(string oldTranslationGroupName, string newTranslationGroupName);
+        TranslationsGroup Update(string oldTranslationsGroupName, string newTranslationsGroupName);
+
+        /// <summary>
+        /// update the old TranslationGroup name with the new name
+        /// </summary>
+        /// <param name="oldTranslationGroup">the old translation Croup name</param>
+        /// <param name="newTranslationGroup">the new translation Group</param>
+        /// <returns>the updated TranslationGroup</returns>
+        TranslationsGroup Update(TranslationsGroup oldTranslationGroup, TranslationsGroup newTranslationGroup);
 
         /// <summary>
         /// delete the translations Group from the list
         /// </summary>
         /// <param name="item">translation group to be removed</param>
         /// <returns>true if the item deleted, false if not</returns>
-        /// <exception cref="TranslationGroupNotExistException">if the translation group not exist</exception>
+        /// <exception cref="TranslationsGroupNotExistException">if the translation group not exist</exception>
         bool Remove(TranslationsGroup item);
 
         /// <summary>
@@ -66,11 +69,11 @@
         /// </summary>
         /// <param name="TranslationGroupName">Name of translation group to be removed</param>
         /// <returns>true if the item deleted, false if not</returns>
-        /// <exception cref="TranslationGroupNotExistException">if the translation group not exist</exception>
+        /// <exception cref="TranslationsGroupNotExistException">if the translation group not exist</exception>
         bool Remove(string TranslationGroupName);
 
         /// <summary>
-        /// remove all elements from the list
+        /// remove all TranslationsGroups from the list
         /// </summary>
         void Clear();
 
@@ -81,10 +84,22 @@
         bool SaveChanges();
 
         /// <summary>
+        /// save the translations to the dataSource
+        /// </summary>
+        /// <returns>true if data is saved, false if not</returns>
+        System.Threading.Tasks.Task<bool> SaveChangesAsync();
+
+        /// <summary>
         /// Export the translations to the file
         /// </summary>
         /// <param name="file">file where translations will be exported</param>
         bool SaveToFile(IYiSoTranslationFile file);
+
+        /// <summary>
+        /// Export the translations to the file 
+        /// </summary>
+        /// <param name="file">file where translations will be exported</param>
+        System.Threading.Tasks.Task<bool> SaveToFileAsync(IYiSoTranslationFile file);
 
         /// <summary>
         /// get the list of translations from the File and 
@@ -94,30 +109,30 @@
         void ReadFromFile(IYiSoTranslationFile file);
 
         /// <summary>
-        /// check if there is a translationGroup with the given name
+        /// check if there is a translationsGroup with the given name
         /// </summary>
-        /// <param name="name">the name of translationGroup</param>
+        /// <param name="name">the name of translationsGroup</param>
         /// <returns>true if exist, false if not</returns>
         bool IsExist(string name);
 
         /// <summary>
-        /// look for a translation group in the list by name
+        /// look for a translations group in the list by name
         /// </summary>
-        /// <param name="name">the name of the translation group</param>
+        /// <param name="name">the name of the translations group</param>
         /// <returns>the translation Group if exist, null if nothing found</returns>
         TranslationsGroup Find(string name);
 
         /// <summary>
-        /// look for a translation group in the list by a predicate
+        /// look for a translations group in the list by a predicate
         /// </summary>
         /// <param name="predicate">the predicate to look with</param>
-        /// <returns>the list of translation Group if exist, null if nothing found</returns>
+        /// <returns>the list of translations Group if exist, null if nothing found</returns>
         IEnumerable<TranslationsGroup> Find(Func<TranslationsGroup, bool> predicate);
 
         /// <summary>
         /// determine whether the element exist in the list
         /// </summary>
-        /// <param name="item">the TranslationGroup to look for</param>
+        /// <param name="item">the TranslationsGroup to look for</param>
         /// <returns>true if exist, false if not </returns>
         bool Contains(TranslationsGroup item);
 

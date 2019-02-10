@@ -98,18 +98,18 @@ namespace YiSoTranslator
 
     #endregion
 
-    #region Translation Group Exceptions
+    #region Translations Group Exceptions
 
     /// <summary>
-    /// Exception For finding a similar Translation group with the same name in the translation list
+    /// Exception For finding a similar Translations group with the same name in the translations list
     /// </summary>
     [DebuggerStepThrough]
-    public class TranslationGroupAlreadyExistException : YiSoTranslatorExceptions
+    public class TranslationsGroupAlreadyExistException : YiSoTranslatorExceptions
     {
         /// <summary>
-        /// default constructor with translationGroup Name
+        /// default constructor with translationsGroup Name
         /// </summary>
-        public TranslationGroupAlreadyExistException(string translationGroupName)
+        public TranslationsGroupAlreadyExistException(string translationGroupName)
             : base($"You already have a TranslationGroup with the given name '{translationGroupName}")
         {
 
@@ -117,15 +117,15 @@ namespace YiSoTranslator
     }
 
     /// <summary>
-    /// Exception For not finding a translation group with the given name in the list of translations
+    /// Exception For not finding a translations group with the given name in the list of translations
     /// </summary>
     [DebuggerStepThrough]
-    public class TranslationGroupNotExistException : YiSoTranslatorExceptions
+    public class TranslationsGroupNotExistException : YiSoTranslatorExceptions
     {
         /// <summary>
         /// default constructor with translationGroup Name
         /// </summary>
-        public TranslationGroupNotExistException(string translationGroupName)
+        public TranslationsGroupNotExistException(string translationGroupName)
             : base($"You don't have a TranslationGroup with the given name '{translationGroupName}'!")
         {
 
@@ -137,7 +137,7 @@ namespace YiSoTranslator
     #region Translations Exceptions
 
     /// <summary>
-    /// Exception for not finding the translation in the translation group
+    /// Exception for not finding the translation
     /// </summary>
     [DebuggerStepThrough]
     public class TranslationNotExistExceptions : YiSoTranslatorExceptions
@@ -205,7 +205,7 @@ namespace YiSoTranslator
         /// <summary>
         /// constructor with prams
         /// </summary>
-        /// <param name="LanguageCode"></param>
+        /// <param name="LanguageCode">the language code</param>
         public InvalidLanguageCode(string LanguageCode)
             : base($"there is no Language with the given Language code : '{LanguageCode}'")
         {
@@ -222,9 +222,9 @@ namespace YiSoTranslator
         /// <summary>
         /// constructor with prams
         /// </summary>
-        /// <param name="LanguageCode"></param>
-        public InvalidLanguageName(string LanguageCode)
-            : base($"there is no Language with the given Language Name : '{LanguageCode}'")
+        /// <param name="LanguageName">the language name</param>
+        public InvalidLanguageName(string LanguageName)
+            : base($"there is no Language with the given Language Name : '{LanguageName}'")
         {
 
         }

@@ -1,9 +1,9 @@
 ﻿namespace YiSoTranslator
 {
     /// <summary>
-    /// class for defining the Translation List change event argument
+    /// class for defining the Translations List change event argument
     /// </summary>
-    public class TranslationListChangedEventArgs
+    public class TranslationsListChangedEventArgs
     {
         /// <summary>
         /// type of the change
@@ -21,7 +21,7 @@
         public Translation OldTranslation { get; }
 
         /// <summary>
-        /// the new item in the list, null in case of Delete and Update
+        /// the new item in the list, null in case of Delete
         /// </summary>
         public Translation NewTranslation { get; }
 
@@ -32,7 +32,7 @@
         /// <param name="changedIndex">index of where the change occur</param>
         /// <param name="oldTranslation">the old item in the list</param>
         /// <param name="newTranslation">the new item in the list</param>
-        public TranslationListChangedEventArgs
+        public TranslationsListChangedEventArgs
             (ListChangedType type, int changedIndex, Translation oldTranslation, Translation newTranslation)
         {
             OperationType = type;

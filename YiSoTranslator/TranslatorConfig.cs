@@ -58,7 +58,7 @@
         /// Use this method to add translations at run time
         /// </summary>
         /// <param name="manager">the manager on the Translator Object</param>
-        public static void AddTranslations(TranslationGroupManager manager)
+        public static void AddTranslations(TranslationsGroupManager manager)
         {
             manager.Add(new TranslationsGroup("Email_text"))
                 .Add(new Translation(Languages.English_UnitedStates.Code(), "Enter your Email!"))

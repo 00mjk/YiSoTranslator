@@ -18,8 +18,8 @@ namespace YiSoTranslator.Test
                 .Add(new Translation(Languages.Arabic_Morocco.Code(), "ادخل الايميل الخاص بك"));
 
             //- Assert
-            Assert.AreEqual(translationGroup.Name, "Email_Text");
-            Assert.AreEqual(translationGroup.Count, 3);
+            Assert.AreEqual("Email_Text", translationGroup.Name);
+            Assert.AreEqual(3, translationGroup.Count);
         }
 
         [TestMethod]
@@ -41,9 +41,7 @@ namespace YiSoTranslator.Test
             //try to add an exiting translation to the translationGroup
 
             //- Arrange
-            var translationGroup = new TranslationsGroup("Email_Text");
-
-            translationGroup
+            var translationGroup = new TranslationsGroup("Email_Text")
                 .Add(new Translation(Languages.English_UnitedStates.Code(), "Enter your Email!"))
                 .Add(new Translation(Languages.French_France.Code(), "Entrer votre Email!"))
                 .Add(new Translation(Languages.Arabic_Morocco.Code(), "ادخل الايميل الخاص بك"));
@@ -74,8 +72,7 @@ namespace YiSoTranslator.Test
             translationGroup.DeleteTranslation("fr-FR");
 
             //- Assert
-            Assert.AreEqual(translationGroup.Name, "Email_Text");
-            Assert.AreEqual(translationGroup.Count, 1);
+            Assert.AreEqual(1, translationGroup.Count);
         }
 
         [TestMethod]
@@ -133,8 +130,8 @@ namespace YiSoTranslator.Test
             translationGroup.UpdateTranslation(Languages.Arabic_Morocco.Code(), translation1);
 
             //- Assert
-            Assert.AreEqual(translationGroup.Find(Languages.Chinese_China.Code()).Value, "输入你的电子邮箱！");
-            Assert.AreEqual(translationGroup.Find(Languages.Arabic_Morocco.Code()), null);
+            Assert.AreEqual("输入你的电子邮箱！", translationGroup.Find(Languages.Chinese_China.Code()).Value);
+            Assert.AreEqual(null, translationGroup.Find(Languages.Arabic_Morocco.Code()));
         }
 
         [TestMethod]
@@ -154,8 +151,8 @@ namespace YiSoTranslator.Test
             translationGroup.UpdateTranslation(Languages.Arabic_Morocco.Code(), translation);
 
             //- Assert
-            Assert.AreEqual(translationGroup.Find(Languages.Arabic_Morocco.Code()).Value, "ادخل الايميل الخاص بك");
-            Assert.AreEqual(translationGroup.Find(Languages.Spanish_Spain.Code()).Value, "¡Introduce tu correo electrónico!");
+            Assert.AreEqual("ادخل الايميل الخاص بك", translationGroup.Find(Languages.Arabic_Morocco.Code()).Value);
+            Assert.AreEqual("¡Introduce tu correo electrónico!", translationGroup.Find(Languages.Spanish_Spain.Code()).Value);
         }
 
         [TestMethod]
@@ -258,6 +255,35 @@ namespace YiSoTranslator.Test
             Assert.AreEqual(true, exist);
             Assert.AreEqual(false, exist2);
             Assert.AreEqual(false, exist3);
+        }
+
+        [TestMethod]
+        public void ValidEqualitycheckOperation()
+        {
+            //- Arrange
+            var translationGroup = new TranslationsGroup("Email_Text")
+                .Add(new Translation(Languages.English_UnitedStates.Code(), "Enter your Email!"))
+                .Add(new Translation(Languages.French_France.Code(), "Entrer votre Email!"))
+                .Add(new Translation(Languages.Arabic_Morocco.Code(), "ادخل الايميل الخاص بك"));
+
+            var translationGroup2 = new TranslationsGroup("Email_Text")
+                .Add(new Translation(Languages.Arabic_Morocco.Code(), "ادخل الايميل الخاص بك"));
+
+            var translationGroup3 = new TranslationsGroup("Email_Text")
+                .Add(new Translation(Languages.Arabic_Morocco.Code(), "ادخل الايميل الخاص بك"));
+
+            var translationGroup4 = new TranslationsGroup("hello_text")
+                .Add(new Translation(Languages.English_UnitedStates.Code(), "Hello there"));
+
+            //- Act
+            var r1 = translationGroup != translationGroup2;
+            var r2 = translationGroup2 == translationGroup3;
+            var r3 = translationGroup3 != translationGroup4;
+
+            //- Assert
+            Assert.AreEqual(true, r1);
+            Assert.AreEqual(true, r2);
+            Assert.AreEqual(true, r3);
         }
     }
 }

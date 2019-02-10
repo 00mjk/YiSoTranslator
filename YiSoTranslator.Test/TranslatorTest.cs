@@ -7,12 +7,24 @@ namespace YiSoTranslator.Test
     {
         // the TEST in here should be run One by one
 
+        static InMemoryTranslationProvider provider;
+        static Translator translator;
+
+        [ClassInitialize]
+        public static void Init(TestContext context)
+        {
+            provider = new InMemoryTranslationProvider();
+            translator = new Translator(provider);
+
+            LanguageSetting.Instant.CurrentLanguage = Language.GetByEnum(Languages.English_UnitedStates);
+            LanguageSetting.Instant.DefaultLanguage = Language.GetByEnum(Languages.English_UnitedStates);
+        }
+
         [TestMethod]
+        [Priority(1000)]
         public void ValideTranslatorTest()
         {
             //- Arrange
-            var provider = new InMemoryTranslationProvider();
-            var translator = new Translator(provider);
 
             //- Act
             var text = translator.GetText("hello_text");
@@ -22,10 +34,37 @@ namespace YiSoTranslator.Test
         }
 
         [TestMethod]
+        [Priority(900)]
+        [ExpectedException(typeof(TranslationsGroupNotExistException))]
+        public void InValideTranslatorGetTextTest()
+        {
+            //- Arrange
+
+            //- Act
+            var text = translator.GetText("hello_there");
+
+            //- Assert
+        }
+
+        [TestMethod]
+        [Priority(700)]
+        public void ValideTranslatorGetTextfallToDefaultTest()
+        {
+            //- Arrange
+
+            //- Act
+            // there is no translation for this language should fall back to default
+            var text = translator.GetText("hello_text", Languages.Armenian_Armenia);
+
+            //- Assert 
+            Assert.AreEqual("Hello", text);
+        }
+
+        [TestMethod]
+        [Priority(500)]
         public void ValideTranslatorLanguageInstantTest()
         {
             //- Arrange
-            var provider = new InMemoryTranslationProvider();
             var translator = new Translator(provider);
 
             //- Act

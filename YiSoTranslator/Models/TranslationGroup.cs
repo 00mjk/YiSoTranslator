@@ -1,14 +1,14 @@
 ﻿namespace YiSoTranslator
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Collections.Generic;
 
     /// <summary>
     /// represent a Translations Group with the translations list
     /// </summary>
     [System.Diagnostics.DebuggerStepThrough]
-    public class TranslationsGroup : IComparable
+    public class TranslationsGroup : IComparable, IEquatable<TranslationsGroup>
     {
         #region private fields
 
@@ -51,7 +51,7 @@
         /// <summary>
         /// Event Raised when the List of translation changed
         /// </summary>
-        public event EventHandler<TranslationListChangedEventArgs> TranslationsListChanged;
+        public event EventHandler<TranslationsListChangedEventArgs> TranslationsListChanged;
 
         #endregion
 
@@ -77,9 +77,7 @@
         /// <param name="language">the language to check</param>
         /// <returns>true if exist</returns>
         public bool HasLanguage(Languages language)
-        {
-            return HasLanguage(language.Code());
-        }
+            => HasLanguage(language.Code());
 
         /// <summary>
         /// check if the TranslationsGroup has the given language
@@ -87,9 +85,7 @@
         /// <param name="languageCode">the language to check</param>
         /// <returns>true if exist</returns>
         public bool HasLanguage(string languageCode)
-        {
-            return _translationsList.Any(t => t.LanguageCode == languageCode);
-        }
+            => _translationsList.Any(t => t.LanguageCode == languageCode);
 
         /// <summary>
         /// find the Translation with given language code
@@ -97,9 +93,7 @@
         /// <param name="Code">the code of the language</param>
         /// <returns>return the Translation if exist, null if nothing found</returns>
         public Translation Find(string Code)
-        {
-            return TranslationsList.FirstOrDefault(t => t.LanguageCode.ToLower() == Code.ToLower());
-        }
+            => _translationsList.FirstOrDefault(t => t.LanguageCode.ToLower() == Code.ToLower());
 
         /// <summary>
         /// get the index of the translation in the translations list
@@ -107,9 +101,7 @@
         /// <param name="translation">translation to find</param>
         /// <returns>the index of the translation</returns>
         public int IndexOf(Translation translation)
-        {
-            return _translationsList.IndexOf(translation);
-        }
+            => _translationsList.IndexOf(translation);
 
         /// <summary>
         /// add the translation to the list, if the translation already exist an exception will be thrown
@@ -135,9 +127,7 @@
         /// <param name="translation">the translation to be removed</param>
         /// <exception cref="TranslationNotExistExceptions">if the Translation Not Found</exception>
         public void DeleteTranslation(Translation translation)
-        {
-            DeleteTranslation(translation.LanguageCode);
-        }
+            => DeleteTranslation(translation.LanguageCode);
 
         /// <summary>
         /// remove the translation from the list that has the given LanguageCode
@@ -191,26 +181,31 @@
         public void ChangeTranslationList(List<Translation> translations)
         {
             _translationsList = translations;
-            TranslationsListChanged?.Invoke(this, new TranslationListChangedEventArgs(ListChangedType.NewRefrence, -1, null, null));
+            OnTranslationsListChanged();
         }
 
         #endregion
 
         #region Private methods
 
+        private void OnTranslationsListChanged()
+        {
+            TranslationsListChanged?.Invoke(this, new TranslationsListChangedEventArgs(ListChangedType.NewRefrence, -1, null, null));
+        }
+
         private void OnUpdateTranslation(int index, Translation NewTranslation, Translation OldTranslation)
         {
-            TranslationsListChanged?.Invoke(this, new TranslationListChangedEventArgs(ListChangedType.Update, index, OldTranslation, NewTranslation));
+            TranslationsListChanged?.Invoke(this, new TranslationsListChangedEventArgs(ListChangedType.Update, index, OldTranslation, NewTranslation));
         }
 
         private void OnAddTranlsation(Translation translation)
         {
-            TranslationsListChanged?.Invoke(this, new TranslationListChangedEventArgs(ListChangedType.Add, IndexOf(translation), null, translation));
+            TranslationsListChanged?.Invoke(this, new TranslationsListChangedEventArgs(ListChangedType.Add, IndexOf(translation), null, translation));
         }
 
         private void OnDeleteTranslation(Translation translation)
         {
-            TranslationsListChanged?.Invoke(this, new TranslationListChangedEventArgs(ListChangedType.Delete, -1, translation, null));
+            TranslationsListChanged?.Invoke(this, new TranslationsListChangedEventArgs(ListChangedType.Delete, -1, translation, null));
         }
 
         #endregion
@@ -218,37 +213,11 @@
         #region Overrides
 
         /// <summary>
-        /// check if the two obj are equals
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType() || (obj as TranslationsGroup).Name != Name)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// return the has code of the object
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        /// <summary>
         /// return the name of the object
         /// </summary>
         /// <returns></returns>
         public override string ToString()
-        {
-            return $"Name : {Name}, Translation Count : {Count}";
-        }
+            => $"Name : {Name}, Translation Count : {Count}";
 
         /// <summary>
         /// compare the two objects
@@ -258,9 +227,7 @@
         public int CompareTo(object obj)
         {
             if (!(obj is TranslationsGroup tg))
-            {
                 return 1;
-            }
 
             return Name.CompareTo(tg.Name);
         }
@@ -274,6 +241,49 @@
             return false;
         }
 
+        /// <summary>
+        /// check if the given obj equals this instant
+        /// </summary>
+        /// <param name="obj">the object to compare to</param>
+        /// <returns>true if equals</returns>
+        public override bool Equals(object obj)
+            => Equals(obj as TranslationsGroup);
+
+        /// <summary>
+        /// check if the translationsGroup are equals
+        /// </summary>
+        /// <param name="translationsGroup">the object to compare to</param>
+        /// <returns>true if equals</returns>
+        public bool Equals(TranslationsGroup translationsGroup)
+            => translationsGroup != null &&
+                   Name == translationsGroup.Name
+                   && Count == translationsGroup.Count;
+
+        /// <summary>
+        /// get the hash code
+        /// </summary>
+        /// <returns>hash code</returns>
+        public override int GetHashCode()
+            => 539060726 + EqualityComparer<string>.Default.GetHashCode(Name);
+
+        /// <summary>
+        /// implement the equality operator
+        /// </summary>
+        /// <param name="group1"></param>
+        /// <param name="group2"></param>
+        /// <returns>true if equals</returns>
+        public static bool operator ==(TranslationsGroup group1, TranslationsGroup group2)
+            => EqualityComparer<TranslationsGroup>.Default.Equals(group1, group2);
+
+        /// <summary>
+        /// implement the non equality operator
+        /// </summary>
+        /// <param name="group1"></param>
+        /// <param name="group2"></param>
+        /// <returns>true if not equals</returns>
+        public static bool operator !=(TranslationsGroup group1, TranslationsGroup group2)
+            => !(group1 == group2);
+        
         #endregion
     }
 }

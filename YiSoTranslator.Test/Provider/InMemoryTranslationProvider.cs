@@ -1,46 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace YiSoTranslator.Test
 {
     public class InMemoryTranslationProvider : IYiSoTranslationProvider
     {
-        #region Private fields
-
         private readonly InMemoryProvider _db;
-
-        #endregion
 
         #region Public Prop
 
-        /// <summary>
-        /// the collection of translations
-        /// </summary>
-        public IEnumerable<TranslationsGroup> TranslationsGroupList
-        {
-            get => _db.TranslationsGroups;
-        }
+        public IEnumerable<TranslationsGroup> TranslationsGroupsList
+             => _db.TranslationsGroups;
 
-        /// <summary>
-        /// the total number of translations in the list
-        /// </summary>
-        public int Count { get => _db.TranslationsGroups.Count; }
+        public int Count => _db.TranslationsGroups.Count; 
 
-        /// <summary>
-        /// event raised when the list changed
-        /// </summary>
         public event EventHandler<TranslationsGroupsListChangedEventArgs> TranslationsGroupsListChanged;
-        public event EventHandler<TranslationListChangedEventArgs> TranslationsListChanged;
+
         public event EventHandler<DataSourceChangedEventArgs> DataSourceChanged;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// constructor with Translation file
-        /// </summary>
         public InMemoryTranslationProvider()
         {
             _db = new InMemoryProvider();
@@ -95,21 +78,10 @@ namespace YiSoTranslator.Test
         #region Read and save data
 
         /// <summary>
-        /// dispose the object
-        /// </summary>
-        public void Dispose()
-        {
-            _db.Dispose();
-        }
-
-        /// <summary>
         /// save the translations to the dataSource
         /// </summary>
         /// <returns>true if data is saved, false if not</returns>
-        public bool SaveChanges()
-        {
-            return _db.SaveChanges();
-        }
+        public bool SaveChanges() => _db.SaveChanges();
 
         #endregion
 
@@ -125,7 +97,7 @@ namespace YiSoTranslator.Test
             var tg = Find(translationGroup.Name);
 
             if (tg != null)
-                throw new TranslationGroupAlreadyExistException(translationGroup.Name);
+                throw new TranslationsGroupAlreadyExistException(translationGroup.Name);
 
             _db.TranslationsGroups.Add(translationGroup);
 
@@ -137,7 +109,7 @@ namespace YiSoTranslator.Test
         /// Add the translation groups to the list, only non existing one will be add, others will be escaped
         /// </summary>
         /// <param name="translationGroups">translation groups to be added</param>
-        public void AddRange(IEnumerable<TranslationsGroup> translationGroups)
+        public void AddRange(params TranslationsGroup[] translationGroups)
         {
             foreach (var item in translationGroups)
             {
@@ -159,12 +131,12 @@ namespace YiSoTranslator.Test
         public TranslationsGroup Update(string oldTranslationGroupName, string newTranslationGroupName)
         {
             var old = Find(oldTranslationGroupName)
-                ?? throw new TranslationGroupNotExistException(oldTranslationGroupName);
+                ?? throw new TranslationsGroupNotExistException(oldTranslationGroupName);
 
             var newT = Find(newTranslationGroupName);
 
             if (!(newT is null))
-                throw new TranslationGroupAlreadyExistException(newTranslationGroupName);
+                throw new TranslationsGroupAlreadyExistException(newTranslationGroupName);
 
             old.Name = newTranslationGroupName;
 
@@ -179,9 +151,7 @@ namespace YiSoTranslator.Test
         /// <returns>true if the item deleted, false if not</returns>
         /// <exception cref="TranslationGroupNotExistException">if the translation group not exist</exception>
         public bool Remove(TranslationsGroup item)
-        {
-            return Remove(item.Name);
-        }
+            => Remove(item.Name);
 
         /// <summary>
         /// delete the translations Group from the list
@@ -192,7 +162,7 @@ namespace YiSoTranslator.Test
         public bool Remove(string TranslationGroupName)
         {
             var TG = Find(TranslationGroupName)
-                ?? throw new TranslationGroupNotExistException(TranslationGroupName);
+                ?? throw new TranslationsGroupNotExistException(TranslationGroupName);
 
             _db.TranslationsGroups.Remove(TG);
             OnDataChanged(ListChangedType.Delete, Count - 1, TG, null);
@@ -203,9 +173,7 @@ namespace YiSoTranslator.Test
         /// remove all elements from the list
         /// </summary>
         public void Clear()
-        {
-            _db.TranslationsGroups.Clear();
-        }
+            => _db.TranslationsGroups.Clear();
 
         #endregion
 
@@ -234,9 +202,29 @@ namespace YiSoTranslator.Test
         }
 
         public bool IsExist(string name)
+            => _db.TranslationsGroups.Any(t => t.Name == name);
+
+        public TranslationsGroup Update(TranslationsGroup oldTranslationGroup, TranslationsGroup newTranslationGroup)
         {
-            return _db.TranslationsGroups.Any(t => t.Name == name);
+            var old = Find(oldTranslationGroup.Name)
+                ?? throw new TranslationsGroupNotExistException(oldTranslationGroup.Name);
+
+            var newT = Find(newTranslationGroup.Name);
+
+            if (!(newT is null))
+                throw new TranslationsGroupAlreadyExistException(newTranslationGroup.Name);
+
+            _db.TranslationsGroups[IndexOf(old)] = newTranslationGroup;
+
+            OnDataChanged(ListChangedType.Update, IndexOf(old), old, newTranslationGroup);
+            return old;
         }
+
+        public Task<bool> SaveChangesAsync()
+            => Task.Run(() => SaveChanges());
+
+        public Task<bool> SaveToFileAsync(IYiSoTranslationFile file)
+            => Task.Run(() => SaveToFile(file));
 
         #endregion
     }

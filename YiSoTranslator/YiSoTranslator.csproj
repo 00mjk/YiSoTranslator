@@ -13,12 +13,12 @@
     <PackageProjectUrl>https://youssefsell.github.io/YiSoTranslator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/youssefSell/YiSoTranslator</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <Version>2.2.0</Version>
-    <PackageReleaseNotes>add some new functionality to the plugin, and update the structure of the code</PackageReleaseNotes>
+    <Version>2.3.0</Version>
+    <PackageReleaseNotes>add some new functionality to the plugin, and update the structure of the code,</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>C:\Users\youss\Desktop\WorkSpace\Projects\Published products\YiSoTranslator\YiSoTranslator - v2.2.0\YiSoTranslator\bin\Release\netstandard2.0\YiSoTranslator.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>

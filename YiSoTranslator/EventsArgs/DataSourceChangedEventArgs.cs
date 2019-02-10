@@ -1,7 +1,7 @@
 ﻿namespace YiSoTranslator
 {
     /// <summary>
-    /// class for defining the Translation List change event argument
+    /// class for defining the DataSource changed event argument
     /// </summary>
     public class DataSourceChangedEventArgs
     {

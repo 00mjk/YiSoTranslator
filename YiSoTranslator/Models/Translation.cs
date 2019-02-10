@@ -4,7 +4,7 @@
     /// A class represent a single translation
     /// </summary>
     [System.Diagnostics.DebuggerStepThrough]
-    public class Translation
+    public class Translation : System.IEquatable<Translation>
     {
         private string _languageCode;
 
@@ -14,10 +14,11 @@
         public string LanguageCode
         {
             get => _languageCode;
-            set {
+            set
+            {
                 if (Language.GetByCode(value) == null)
                     throw new InvalidLanguageCode(value);
-                
+
                 _languageCode = value;
             }
         }
@@ -37,5 +38,46 @@
             LanguageCode = languageCode;
             Value = value;
         }
+
+        #region Overrides
+
+        /// <summary>
+        /// check if the given object is equal to this instant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>true if equals</returns>
+        public override bool Equals(object obj)
+            => obj is Translation && Equals(obj as Translation);
+
+        /// <summary>
+        /// check if the given Translation is equal to this instant
+        /// </summary>
+        /// <param name="translation">the translation to compare to</param>
+        /// <returns>true if equals</returns>
+        public bool Equals(Translation translation)
+            => translation != null &&
+                   LanguageCode == translation.LanguageCode &&
+                   Value == translation.Value;
+
+        /// <summary>
+        /// get the hash code
+        /// </summary>
+        /// <returns>hash code</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = -396614724;
+            hashCode = hashCode * -1521134295 + System.Collections.Generic.EqualityComparer<string>.Default.GetHashCode(LanguageCode);
+            hashCode = hashCode * -1521134295 + System.Collections.Generic.EqualityComparer<string>.Default.GetHashCode(Value);
+            return hashCode;
+        }
+
+        /// <summary>
+        /// return the string representation
+        /// </summary>
+        /// <returns>string</returns>
+        public override string ToString()
+            => $"Language Code : {LanguageCode}, Value : {Value}";
+
+        #endregion
     }
 }

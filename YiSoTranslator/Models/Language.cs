@@ -1,5 +1,6 @@
 ﻿namespace YiSoTranslator
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -8,7 +9,7 @@
     /// it cannot be instantiated
     /// </summary>
     [System.Diagnostics.DebuggerStepThrough]
-    public class Language
+    public class Language : IEquatable<Language>
     {
         #region Private static members
 
@@ -160,12 +161,12 @@
         /// <summary>
         /// the language code presented by Microsoft
         /// </summary>
-        public string Code { get; private set; }
+        public string Code { get; }
 
         /// <summary>
         /// the full name of the language
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// get the mode of the language it RTL or LTR
@@ -194,7 +195,7 @@
         /// <param name="name">the name of the language</param>
         /// <returns>return the language, if nothing found will return null</returns>
         public static Language GetByName(string name)
-            => GetLanguageList().FirstOrDefault(l => l.Name == name);
+            => _languagesList.FirstOrDefault(l => l.Name == name);
 
         /// <summary>
         /// Find a language by it code
@@ -202,7 +203,7 @@
         /// <param name="code">the code of the language</param>
         /// <returns>return the language, if nothing found will return null</returns>
         public static Language GetByCode(string code)
-            => GetLanguageList().FirstOrDefault(l => l.Code == code);
+            => _languagesList.FirstOrDefault(l => l.Code == code);
 
         /// <summary>
         /// Get the string representation of the language 
@@ -210,7 +211,7 @@
         /// <param name="language">the language to get the string representation for</param>
         /// <returns>Return the Language that have the given name</returns>
         public static Language GetByEnum(Languages language)
-            => GetLanguageList().FirstOrDefault(l => l.Name == language.ToString());
+            => _languagesList.FirstOrDefault(l => l.Name == language.ToString());
 
         /// <summary>
         /// get the ENUM value of the current language objects
@@ -357,5 +358,63 @@
                 default: return Languages.English_UnitedStates;
             }
         }
+
+        #region Overrides
+
+        /// <summary>
+        /// check if the given object is equal to this instant
+        /// </summary>
+        /// <param name="obj">the object to compare to</param>
+        /// <returns>true if equals</returns>
+        public override bool Equals(object obj)
+            => obj is Language && Equals(obj as Language);
+
+        /// <summary>
+        /// check if the given language is equal to this instant
+        /// we compare the name and the language code
+        /// </summary>
+        /// <param name="language">the language to compare to</param>
+        /// <returns>true if equals</returns>
+        public bool Equals(Language language)
+            => language != null && Code == language.Code && Name == language.Name;
+
+        /// <summary>
+        /// get the HashCode
+        /// </summary>
+        /// <returns>the HashCode</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = -168117446;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Code);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            return hashCode;
+        }
+
+        /// <summary>
+        /// get the string Representation of the object
+        /// </summary>
+        /// <returns>string</returns>
+        public override string ToString()
+            => $"Name : {Name}, Code : {Code}, Mode : {Mode}";
+
+        /// <summary>
+        /// implement the equality operator
+        /// </summary>
+        /// <param name="language1"></param>
+        /// <param name="language2"></param>
+        /// <returns>true if equals</returns>
+        public static bool operator ==(Language language1, Language language2)
+            => EqualityComparer<Language>.Default.Equals(language1, language2);
+
+        /// <summary>
+        /// implement the non equality operator
+        /// </summary>
+        /// <param name="language1"></param>
+        /// <param name="language2"></param>
+        /// <returns>true not equals</returns>
+        public static bool operator !=(Language language1, Language language2)
+            => !(language1 == language2);
+
+        #endregion
     }
 }

@@ -1,12 +1,13 @@
 ﻿namespace YiSoTranslator
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Class to work with the language Setting
     /// </summary>
     [System.Diagnostics.DebuggerStepThrough]
-    public class LanguageSetting
+    public class LanguageSetting : IEquatable<LanguageSetting>
     {
         #region private members
 
@@ -73,39 +74,59 @@
         #region Overrides
 
         /// <summary>
-        /// return the current and Default Language
+        /// return the string representation
         /// </summary>
-        /// <returns>the name of the obj</returns>
+        /// <returns>string</returns>
         public override string ToString()
-        {
-            return $"Current Language : '{CurrentLanguage}', Default Language : '{DefaultLanguage}'";
-        }
+            => $"Current Language : '{CurrentLanguage}', Default Language : '{DefaultLanguage}'";
 
         /// <summary>
-        /// check if the objects are equals base on the value of the Current and Default Language
+        /// check if the given object is equal to this instant
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns>the boolean value of the comparison</returns>
+        /// <param name="obj">the object to compare to</param>
+        /// <returns>true if equals</returns>
         public override bool Equals(object obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-                return false;
-
-            if ((obj as LanguageSetting).DefaultLanguage != DefaultLanguage ||
-                (obj as LanguageSetting).CurrentLanguage != CurrentLanguage)
-                return false;
-
-            return true;
-        }
+            => obj is LanguageSetting && Equals(obj as LanguageSetting);
 
         /// <summary>
-        /// get the hash value
+        /// check if the given languageSetting is equal to this instant
         /// </summary>
-        /// <returns>hash value</returns>
+        /// <param name="languageSetting">the languageSetting to compare to</param>
+        /// <returns>true if equals</returns>
+        public bool Equals(LanguageSetting languageSetting)
+            => languageSetting != null &&
+                   CurrentLanguage.Equals(languageSetting.CurrentLanguage) &&
+                   DefaultLanguage.Equals(languageSetting.DefaultLanguage);
+
+        /// <summary>
+        /// get the hash code of the object
+        /// </summary>
+        /// <returns>the hash code</returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            var hashCode = -424535100;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Language>.Default.GetHashCode(CurrentLanguage);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Language>.Default.GetHashCode(DefaultLanguage);
+            return hashCode;
         }
+
+        /// <summary>
+        /// implement the equality operator
+        /// </summary>
+        /// <param name="setting1"></param>
+        /// <param name="setting2"></param>
+        /// <returns>true if equals</returns>
+        public static bool operator ==(LanguageSetting setting1, LanguageSetting setting2)
+            => EqualityComparer<LanguageSetting>.Default.Equals(setting1, setting2);
+
+        /// <summary>
+        /// implement the non equality operator
+        /// </summary>
+        /// <param name="setting1"></param>
+        /// <param name="setting2"></param>
+        /// <returns>true if not equals</returns>
+        public static bool operator !=(LanguageSetting setting1, LanguageSetting setting2)
+            => !(setting1 == setting2);
 
         #endregion
     }

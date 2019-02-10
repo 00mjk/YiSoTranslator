@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// class for defining the List change event argument
+    /// class for defining Translations Groups List Changed event argument
     /// </summary>
     public class TranslationsGroupsListChangedEventArgs : EventArgs
     {
@@ -23,7 +23,7 @@
         public TranslationsGroup OldRecord { get; }
 
         /// <summary>
-        /// the new item in the list, null in case of Delete and Update
+        /// the new item in the list, null in case of Delete
         /// </summary>
         public TranslationsGroup NewRecord { get; }
 

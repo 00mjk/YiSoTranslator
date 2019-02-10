@@ -6,13 +6,13 @@
     public enum DataSourceChanged
     {
         /// <summary>
-        /// Data Source has been updated , in case of save changes
+        /// Data Source has been updated
         /// </summary>
         Updated,
 
         /// <summary>
         /// the data source has been removed
         /// </summary>
-        Delete,
+        Deleted,
     }
 }

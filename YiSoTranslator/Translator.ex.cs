@@ -2,47 +2,8 @@
 {
     using System.Threading.Tasks;
 
-    public partial class Translator 
+    public partial class Translator
     {
-        #region Private Methods
-
-        /// <summary>
-        /// Find the translation of the given name for specified language
-        /// </summary>
-        /// <param name="name">the name of the translation</param>
-        /// <param name="language">the language of the translation</param>
-        /// <returns>the translation</returns>
-        private async Task<string> FindTextInJsonAsync(string name, string language)
-        {
-            return await Task.Run(() =>
-            {
-               return FindText(name, language);
-            });
-        }
-
-        /// <summary>
-        /// Find the translation of the given name for specified language
-        /// </summary>
-        /// <param name="name">the name of the translation</param>
-        /// <param name="language">the language of the translation</param>
-        /// <returns>the translation</returns>
-        private string FindText(string name, string language)
-        {
-            if (string.IsNullOrEmpty(language) || string.IsNullOrEmpty(name))
-                return null;
-
-            var TranslationGroup = TranslationsManager.Find(name) 
-                ?? throw new TranslationGroupNotExistException(name);
-
-            var translation = TranslationGroup.Find(language)
-                ?? TranslationGroup.Find(LanguageSetting.DefaultLanguage.Code)
-                ?? throw new TranslationNotExistExceptions();
-
-            return translation.Value;
-        }
-
-        #endregion
-
         #region Public Methods
 
         /// <summary>
@@ -114,6 +75,52 @@
         /// <returns>the translation of the given name</returns>
         public string GetText(string name, string language)
             => FindText(name, language);
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Find the translation of the given name for specified language
+        /// </summary>
+        /// <param name="name">the name of the translation</param>
+        /// <param name="language">the language of the translation</param>
+        /// <returns>the translation</returns>
+        private async Task<string> FindTextInJsonAsync(string name, string language)
+            => await Task.Run(() => FindText(name, language));
+
+        /// <summary>
+        /// Find the translation of the given name for specified language
+        /// </summary>
+        /// <param name="name">the name of the translation</param>
+        /// <param name="language">the language of the translation</param>
+        /// <returns>the translation</returns>
+        private string FindText(string name, string language)
+        {
+            if (string.IsNullOrEmpty(language) || string.IsNullOrEmpty(name))
+                return null;
+
+            var TranslationGroup = Manager.Find(name) 
+                ?? throw new TranslationsGroupNotExistException(name);
+
+            var translation = TranslationGroup.Find(language)
+                ?? TranslationGroup.Find(LanguageSetting.DefaultLanguage.Code)
+                ?? throw new TranslationNotExistExceptions();
+
+            return translation.Value;
+        }
+
+        private void Setting_DefaultLanguageChanged(object sender, LanguageChangedEventArgs e)
+            => DefaultLanguageChanged?.Invoke(sender, e);
+
+        private void Setting_CurrentLanguageChanged(object sender, LanguageChangedEventArgs e)
+            => CurrentLanguageChanged?.Invoke(sender, e);
+
+        private void Manager_ListChanged(object sender, TranslationsGroupsListChangedEventArgs e)
+            => TranslationGroupsListChanged?.Invoke(sender, e);
+
+        private void TranslationsManager_DataSourceChanged(object sender, DataSourceChangedEventArgs e)
+            => DataSourceChanged?.Invoke(sender, e);
 
         #endregion
     }
