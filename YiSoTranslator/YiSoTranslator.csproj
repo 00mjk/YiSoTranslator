@@ -5,7 +5,7 @@
     <Authors>Youssef Sellami</Authors>
     <Company>Youssef Sellami</Company>
     <Description>YiSo Translator is a simple app translation plugin, allowing you to add multiple language to your application, tested on Winforms and WPF</Description>
-    <Copyright>copyright © 2018 Youssef Sellami. all rights reserved</Copyright>
+    <Copyright>copyright © 2019 Youssef Sellami. all rights reserved</Copyright>
     <PackageTags>Translator, winforms translator, WPF translator, multilanguage application, multilanguage</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -13,8 +13,8 @@
     <PackageProjectUrl>https://youssefsell.github.io/YiSoTranslator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/youssefSell/YiSoTranslator</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-    <Version>2.3.0</Version>
-    <PackageReleaseNotes>add some new functionality to the plugin, and update the structure of the code,</PackageReleaseNotes>
+    <Version>2.3.1</Version>
+    <PackageReleaseNotes>add a Reload function to the provider interface</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

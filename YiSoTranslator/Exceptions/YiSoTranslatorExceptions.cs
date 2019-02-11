@@ -20,6 +20,26 @@ namespace YiSoTranslator
         }
     }
 
+    #region Save and Read
+
+    /// <summary>
+    /// Exception Unsaved Changes Error
+    /// </summary>
+    [DebuggerStepThrough]
+    public class UnsavedChangesExceptions : YiSoTranslatorExceptions
+    {
+        /// <summary>
+        /// default Constructor with Error message
+        /// </summary>
+        public UnsavedChangesExceptions()
+            : base("you have Unsaved Changes in your manager try to save them first, if you want to discard the changes pass 'true' to the Reload function")
+        {
+
+        }
+    }
+
+    #endregion
+
     #region File/Folder Exceptions
 
     /// <summary>

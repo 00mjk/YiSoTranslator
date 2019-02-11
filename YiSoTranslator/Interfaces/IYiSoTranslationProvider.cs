@@ -78,6 +78,15 @@
         void Clear();
 
         /// <summary>
+        /// re read the translation from the source
+        /// note that the function has a flag to discard Changes
+        /// by default is set to false, so that if you have unsaved changes 
+        /// you will get an exception
+        /// </summary>
+        /// <exception cref="UnsavedChangesExceptions">if you have unsaved changes</exception>
+        void Reload(bool discardChanges = false);
+
+        /// <summary>
         /// save the translations to the dataSource
         /// </summary>
         /// <returns>true if data is saved, false if not</returns>

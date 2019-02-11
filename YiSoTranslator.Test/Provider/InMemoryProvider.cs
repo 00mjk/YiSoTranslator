@@ -52,5 +52,8 @@ namespace YiSoTranslator.Test
                 tg
             };
         }
+
+        internal void Reload()
+            => GetTranslations();
     }
 }

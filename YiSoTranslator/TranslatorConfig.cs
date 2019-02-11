@@ -20,7 +20,7 @@
         /// <returns>current language</returns>
         private static Language GetDefaultLanguage()
         {
-            //ToDo : implement your own logic for retrieving the Current language
+            //ToDo : implement your own logic for retrieving the Default language
             return Language.GetByEnum(Languages.English_UnitedStates);
         }
 

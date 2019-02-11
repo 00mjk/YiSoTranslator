@@ -8,13 +8,14 @@ namespace YiSoTranslator.Test
     public class InMemoryTranslationProvider : IYiSoTranslationProvider
     {
         private readonly InMemoryProvider _db;
+        private bool _unsavedChanges;
 
         #region Public Prop
 
         public IEnumerable<TranslationsGroup> TranslationsGroupsList
              => _db.TranslationsGroups;
 
-        public int Count => _db.TranslationsGroups.Count; 
+        public int Count => _db.TranslationsGroups.Count;
 
         public event EventHandler<TranslationsGroupsListChangedEventArgs> TranslationsGroupsListChanged;
 
@@ -27,6 +28,7 @@ namespace YiSoTranslator.Test
         public InMemoryTranslationProvider()
         {
             _db = new InMemoryProvider();
+            _unsavedChanges = false;
         }
 
         #endregion
@@ -81,7 +83,11 @@ namespace YiSoTranslator.Test
         /// save the translations to the dataSource
         /// </summary>
         /// <returns>true if data is saved, false if not</returns>
-        public bool SaveChanges() => _db.SaveChanges();
+        public bool SaveChanges()
+        {
+            _unsavedChanges = false;
+            return _db.SaveChanges();
+        }
 
         #endregion
 
@@ -100,6 +106,7 @@ namespace YiSoTranslator.Test
                 throw new TranslationsGroupAlreadyExistException(translationGroup.Name);
 
             _db.TranslationsGroups.Add(translationGroup);
+
 
             OnDataChanged(ListChangedType.Add, Count - 1, null, translationGroup);
             return translationGroup;
@@ -188,6 +195,7 @@ namespace YiSoTranslator.Test
         /// <param name="newRecord">the new record</param>
         private void OnDataChanged(ListChangedType listChangedType, int index, TranslationsGroup oldRecord, TranslationsGroup newRecord)
         {
+            _unsavedChanges = true;
             TranslationsGroupsListChanged?
                 .Invoke(this, new TranslationsGroupsListChangedEventArgs(listChangedType, index, oldRecord, newRecord));
         }
@@ -225,6 +233,14 @@ namespace YiSoTranslator.Test
 
         public Task<bool> SaveToFileAsync(IYiSoTranslationFile file)
             => Task.Run(() => SaveToFile(file));
+
+        public void Reload(bool discardChanges = false)
+        {
+            if (_unsavedChanges && !discardChanges)
+                throw new UnsavedChangesExceptions();
+
+            _db.Reload();
+        }
 
         #endregion
     }

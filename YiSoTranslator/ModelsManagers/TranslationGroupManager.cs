@@ -16,17 +16,17 @@
         /// list holder of Translations Groups
         /// </summary>
         public IEnumerable<TranslationsGroup> TranslationsGroupsList
-            => TranslationProvider.TranslationsGroupsList;
+            => TranslationsProvider.TranslationsGroupsList;
 
         /// <summary>
         /// the count of the items in the list
         /// </summary>
-        public int Count => TranslationProvider.Count;
+        public int Count => TranslationsProvider.Count;
 
         /// <summary>
         /// the translation provider associated with this TranslationsGroupManager
         /// </summary>
-        public IYiSoTranslationProvider TranslationProvider { get; }
+        public IYiSoTranslationProvider TranslationsProvider { get; }
 
         #endregion
 
@@ -52,9 +52,9 @@
         /// <param name="translationProvider">the translation provider</param>
         public TranslationsGroupManager(IYiSoTranslationProvider translationProvider)
         {
-            TranslationProvider = translationProvider;
-            TranslationProvider.TranslationsGroupsListChanged += Provider_TranslationsGroupsListChanged;
-            TranslationProvider.DataSourceChanged += Provider_DataSourceChanged; ;
+            TranslationsProvider = translationProvider;
+            TranslationsProvider.TranslationsGroupsListChanged += Provider_TranslationsGroupsListChanged;
+            TranslationsProvider.DataSourceChanged += Provider_DataSourceChanged; ;
         }
 
         #endregion
@@ -67,7 +67,7 @@
         /// <param name="name">the name of the translations group</param>
         /// <returns>the translations Group if exist, null if nothing found</returns>
         public TranslationsGroup Find(string name)
-            => TranslationProvider.Find(name);
+            => TranslationsProvider.Find(name);
 
         /// <summary>
         /// look for a translation group in the list by a predicate
@@ -75,7 +75,7 @@
         /// <param name="predicate">the predicate to look with</param>
         /// <returns>the translation Group if exist, null if nothing found</returns>
         public IEnumerable<TranslationsGroup> Find(Func<TranslationsGroup, bool> predicate)
-            => TranslationProvider.Find(predicate);
+            => TranslationsProvider.Find(predicate);
 
         /// <summary>
         /// get the index of the given item
@@ -83,7 +83,7 @@
         /// <param name="item">the translation Group</param>
         /// <returns></returns>
         public int IndexOf(TranslationsGroup item)
-            => TranslationProvider.IndexOf(item);
+            => TranslationsProvider.IndexOf(item);
 
         /// <summary>
         /// check if there is a translationsGroup with the given name
@@ -91,7 +91,7 @@
         /// <param name="name">the name of translationsGroup</param>
         /// <returns>true if exist, false if not</returns>
         public bool IsExist(string name)
-            => TranslationProvider.IsExist(name);
+            => TranslationsProvider.IsExist(name);
 
         /// <summary>
         /// determine whether the element exist in the list
@@ -99,7 +99,7 @@
         /// <param name="item">the TranslationsGroup to look for</param>
         /// <returns>true if exist, false if not </returns>
         public bool Contains(TranslationsGroup item)
-            => TranslationProvider.Contains(item);
+            => TranslationsProvider.Contains(item);
 
         #endregion
 
@@ -112,7 +112,7 @@
         /// </summary>
         /// <param name="file">file to read from</param>
         public void GetTranslationsFromFile(IYiSoTranslationFile file)
-            => TranslationProvider.ReadFromFile(file);
+            => TranslationsProvider.ReadFromFile(file);
 
         /// <summary>
         /// export the translations to the file
@@ -122,7 +122,7 @@
         /// <exception cref="TranslationFileMissingExceptions">if the file not exist</exception>
         /// <exception cref="NonValidTranslationFileExtensionExceptions">if the doesn't have a .json extension</exception>
         public bool SaveToFile(IYiSoTranslationFile file)
-            => TranslationProvider.SaveToFile(file);
+            => TranslationsProvider.SaveToFile(file);
 
         /// <summary>
         /// export the translations to the file ASYNC
@@ -133,21 +133,31 @@
         /// <exception cref="TranslationFileMissingExceptions">if the file not exist</exception>
         /// <exception cref="NonValidTranslationFileExtensionExceptions">if the doesn't have a .json extension</exception>
         public async Task<bool> SaveToFileAsync(IYiSoTranslationFile file)
-            => await TranslationProvider.SaveToFileAsync(file);
+            => await TranslationsProvider.SaveToFileAsync(file);
 
         /// <summary>
         /// save the translations to the dataSource
         /// </summary>
         /// <returns>true if data is saved, false if not</returns>
         public bool SaveChanges()
-            => TranslationProvider.SaveChanges();
+            => TranslationsProvider.SaveChanges();
         
         /// <summary>
         /// save the translations to the dataSource
         /// </summary>
         /// <returns>true if data is saved, false if not</returns>
         public async Task<bool> SaveChangesAsync()
-            => await TranslationProvider.SaveChangesAsync();
+            => await TranslationsProvider.SaveChangesAsync();
+
+        /// <summary>
+        /// re read the translation from the source
+        /// note that the function has a flag to discard Changes
+        /// by default is set to false, so that if you have unsaved changes 
+        /// you will get an exception
+        /// </summary>
+        /// <exception cref="UnsavedChangesExceptions">if you have unsaved changes</exception>
+        public void Reload(bool discardChanges = false)
+            => TranslationsProvider.Reload();
 
         #endregion
 
@@ -159,20 +169,20 @@
         /// <param name="item">translations group to be added</param>
         /// <exception cref="TranslationsGroupAlreadyExistException">if the item Already exist in the list</exception>
         public TranslationsGroup Add(TranslationsGroup item)
-            => TranslationProvider.Add(item);
+            => TranslationsProvider.Add(item);
 
         /// <summary>
         /// Add the translations groups to the list
         /// </summary>
         /// <param name="translationsGroups">translation groups to be added</param>
         public void AddRange(params TranslationsGroup[] translationsGroups)
-            => TranslationProvider.AddRange(translationsGroups);
+            => TranslationsProvider.AddRange(translationsGroups);
 
         /// <summary>
         /// remove all TranslationsGroups from the list
         /// </summary>
         public void Clear()
-            => TranslationProvider.Clear();
+            => TranslationsProvider.Clear();
 
         /// <summary>
         /// Remove the translations Group from the list
@@ -190,7 +200,7 @@
         /// <returns>true if the item deleted, false if not</returns>
         /// <exception cref="TranslationsGroupNotExistException">if the translations group not exist</exception>
         public bool Remove(string TranslationsGroupName)
-            => TranslationProvider.Remove(TranslationsGroupName);
+            => TranslationsProvider.Remove(TranslationsGroupName);
 
         /// <summary>
         /// update the old TranslationsGroup name with the new name
@@ -201,7 +211,7 @@
         /// <exception cref="TranslationsGroupNotExistException">If the old TranslationsGroup is not found</exception>
         /// <exception cref="TranslationsGroupAlreadyExistException">If the new TranslationsGroup is Already Exist</exception>
         public TranslationsGroup Update(string oldTranslationsGroupName, string newTranslationsGroupName)
-            => TranslationProvider.Update(oldTranslationsGroupName, newTranslationsGroupName);
+            => TranslationsProvider.Update(oldTranslationsGroupName, newTranslationsGroupName);
 
         /// <summary>
         /// update the old TranslationGroup name with the new name
@@ -210,7 +220,7 @@
         /// <param name="newTranslationGroup">the new translation Group</param>
         /// <returns>the updated TranslationGroup</returns>
         public TranslationsGroup Update(TranslationsGroup oldTranslationGroup, TranslationsGroup newTranslationGroup)
-            => TranslationProvider.Update(oldTranslationGroup, newTranslationGroup);
+            => TranslationsProvider.Update(oldTranslationGroup, newTranslationGroup);
 
         #endregion
 
