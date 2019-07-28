@@ -5,159 +5,14 @@
     using System.Linq;
 
     /// <summary>
-    /// A class that represent the language and give the list of the supported languages
-    /// it cannot be instantiated
+    /// A struct that represent the language and give the list of the supported languages it cannot be instantiated,
+    /// use the static methods <see cref="GetByCode(string)"/>, <see cref="GetByEnum(Languages)"/> or <see cref="GetByName(string)"/> to get the desired language.
+    /// in case of a look up using one of the previous method check if the returned <see cref="Language"/> value has a default value with <see cref="HasDefaultValue"/>
+    /// if it has a default value that means it not a valid
     /// </summary>
     [System.Diagnostics.DebuggerStepThrough]
-    public class Language : IEquatable<Language>
+    public partial struct Language : IEquatable<Language>
     {
-        #region Private static members
-
-        static readonly IEnumerable<Language> _languagesList;
-
-        static Language()
-        {
-            _languagesList = new List<Language>
-            {
-                new Language( name : "Albanian_Albania", code : "sq-AL", mode: LanguageMode.LTR),
-                new Language( name : "Arabic_Algeria", code : "ar-DZ", mode: LanguageMode.RTL),
-                new Language( name : "Arabic_Bahrain", code : "ar-BH", mode: LanguageMode.RTL ),
-                new Language( name : "Arabic_Egypt", code : "ar-EG", mode: LanguageMode.RTL ),
-                new Language( name : "Arabic_Iraq", code : "ar-IQ", mode: LanguageMode.RTL ),
-                new Language( name : "Arabic_Jordan", code : "ar-JO", mode: LanguageMode.RTL ),
-                new Language( name : "Arabic_Kuwait", code : "ar-KW", mode: LanguageMode.RTL ),
-                new Language( name : "Arabic_Lebanon", code : "ar-LB", mode: LanguageMode.RTL ),
-                new Language( name : "Arabic_Libya", code : "ar-LY", mode: LanguageMode.RTL ),
-                new Language( name : "Arabic_Morocco", code : "ar-MA" , mode: LanguageMode.RTL),
-                new Language( name : "Arabic_Oman", code : "ar-OM" , mode: LanguageMode.RTL),
-                new Language( name : "Arabic_Qatar", code : "ar-QA" , mode: LanguageMode.RTL),
-                new Language( name : "Arabic_SaudiArabia", code : "ar-SA" , mode: LanguageMode.RTL),
-                new Language( name : "Arabic_Syria", code : "ar-SY" , mode: LanguageMode.RTL),
-                new Language( name : "Arabic_Tunisia", code : "ar-TN" , mode: LanguageMode.RTL),
-                new Language( name : "Arabic_UnitedArabEmirates", code : "ar-AE" , mode: LanguageMode.RTL),
-                new Language( name : "Arabic_Yemen", code : "ar-YE" , mode: LanguageMode.RTL),
-                new Language( name : "Armenian_Armenia", code : "hy-AM" , mode: LanguageMode.LTR),
-                new Language( name : "AzeriCyrillic_Azerbaijan", code : "Cy-az-AZ" , mode: LanguageMode.RTL),
-                new Language( name : "AzeriLatin_Azerbaijan", code : "Lt-az-AZ" , mode: LanguageMode.RTL),
-                new Language( name : "Basque_Basque", code : "eu-ES" , mode: LanguageMode.LTR),
-                new Language( name : "Belarusian_Belarus", code : "be-BY" , mode: LanguageMode.LTR),
-                new Language( name : "Bulgarian_Bulgaria", code : "bg-BG" , mode: LanguageMode.LTR),
-                new Language( name : "Catalan_Catalan", code : "ca-ES" , mode: LanguageMode.LTR),
-                new Language( name : "Chinese_China", code : "zh-CN" , mode: LanguageMode.LTR),
-                new Language( name : "Chinese_HongKongSAR", code : "zh-HK" , mode: LanguageMode.LTR),
-                new Language( name : "Chinese_MacauSAR", code : "zh-MO" , mode: LanguageMode.LTR),
-                new Language( name : "Chinese_Singapore", code : "zh-SG" , mode: LanguageMode.LTR),
-                new Language( name : "Chinese_Taiwan", code : "zh-TW" , mode: LanguageMode.LTR),
-                new Language( name : "Chinese_Simplified", code : "zh-CHS" , mode: LanguageMode.LTR),
-                new Language( name : "Chinese_Traditional", code : "zh-CHT" , mode: LanguageMode.LTR),
-                new Language( name : "Croatian_Croatia", code : "hr-HR" , mode: LanguageMode.LTR),
-                new Language( name : "Czech_CzechRepublic", code : "cs-CZ" , mode: LanguageMode.LTR),
-                new Language( name : "Danish_Denmark", code : "da-DK" , mode: LanguageMode.LTR),
-                new Language( name : "Dhivehi_Maldives", code : "div-MV" , mode: LanguageMode.RTL),
-                new Language( name : "Dutch_Belgium", code : "nl-BE" , mode: LanguageMode.LTR),
-                new Language( name : "Dutch_TheNetherlands", code : "nl-NL" , mode: LanguageMode.LTR),
-                new Language( name : "English_Australia", code : "en-AU" , mode: LanguageMode.LTR),
-                new Language( name : "English_Belize", code : "en-BZ" , mode: LanguageMode.LTR),
-                new Language( name : "English_Canada", code : "en-CA" , mode: LanguageMode.LTR),
-                new Language( name : "English_Caribbean", code : "en-CB" , mode: LanguageMode.LTR),
-                new Language( name : "English_Ireland", code : "en-IE" , mode: LanguageMode.LTR),
-                new Language( name : "English_Jamaica", code : "en-JM" , mode: LanguageMode.LTR),
-                new Language( name : "English_NewZealand", code : "en-NZ" , mode: LanguageMode.LTR),
-                new Language( name : "English_Philippines", code : "en-PH" , mode: LanguageMode.LTR),
-                new Language( name : "English_SouthAfrica", code : "en-ZA" , mode: LanguageMode.LTR),
-                new Language( name : "English_TrinidadAndTobago", code : "en-TT" , mode: LanguageMode.LTR),
-                new Language( name : "English_UnitedKingdom", code : "en-GB" , mode: LanguageMode.LTR),
-                new Language( name : "English_UnitedStates", code : "en-US" , mode: LanguageMode.LTR),
-                new Language( name : "English_Zimbabwe", code : "en-ZW" , mode: LanguageMode.LTR),
-                new Language( name : "Estonian_Estonia", code : "et-EE" , mode: LanguageMode.LTR),
-                new Language( name : "Faroese_FaroeIslands", code : "fo-FO" , mode: LanguageMode.LTR),
-                new Language( name : "Farsi_Iran", code : "fa-IR" , mode: LanguageMode.RTL),
-                new Language( name : "Finnish_Finland", code : "fi-FI" , mode: LanguageMode.LTR),
-                new Language( name : "French_Belgium", code : "fr-BE" , mode: LanguageMode.LTR),
-                new Language( name : "French_Canada", code : "fr-CA" , mode: LanguageMode.LTR),
-                new Language( name : "French_France", code : "fr-FR" , mode: LanguageMode.LTR),
-                new Language( name : "French_Luxembourg", code : "fr-LU" , mode: LanguageMode.LTR),
-                new Language( name : "French_Monaco", code : "fr-MC" , mode: LanguageMode.LTR),
-                new Language( name : "French_Switzerland", code : "fr-CH" , mode: LanguageMode.LTR),
-                new Language( name : "Galician_Galician", code : "gl-ES" , mode: LanguageMode.LTR),
-                new Language( name : "Georgian_Georgia", code : "ka-GE" , mode: LanguageMode.LTR),
-                new Language( name : "German_Austria", code : "de-AT" , mode: LanguageMode.LTR),
-                new Language( name : "German_Germany", code : "de-DE" , mode: LanguageMode.LTR),
-                new Language( name : "German_Liechtenstein", code : "de-LI" , mode: LanguageMode.LTR),
-                new Language( name : "German_Luxembourg", code : "de-LU" , mode: LanguageMode.LTR),
-                new Language( name : "German_Switzerland", code : "de-CH" , mode: LanguageMode.LTR),
-                new Language( name : "Greek_Greece", code : "el-GR" , mode: LanguageMode.LTR),
-                new Language( name : "Gujarati_India", code : "hi-IN" , mode: LanguageMode.LTR),
-                new Language( name : "Hindi_India", code : "he-IL" , mode: LanguageMode.LTR),
-                new Language( name : "Hungarian_Hungary", code : "hu-HU" , mode: LanguageMode.LTR),
-                new Language( name : "Icelandic_Iceland", code : "is-IS" , mode: LanguageMode.LTR),
-                new Language( name : "Indonesian_Indonesia", code : "id-ID" , mode: LanguageMode.LTR),
-                new Language( name : "Italian_Italy", code : "it-IT" , mode: LanguageMode.LTR),
-                new Language( name : "Italian_Switzerland", code : "it-CH" , mode: LanguageMode.LTR),
-                new Language( name : "Japanese_Japan", code : "ja-JP" , mode: LanguageMode.LTR),
-                new Language( name : "Kannada_India", code : "kn-IN" , mode: LanguageMode.LTR),
-                new Language( name : "Kazakh_Kazakhstan", code : "kk-KZ" , mode: LanguageMode.RTL),
-                new Language( name : "Konkani_India", code : "kok-IN" , mode: LanguageMode.LTR),
-                new Language( name : "Korean_Korea", code : "ko-KR" , mode: LanguageMode.LTR),
-                new Language( name : "Kyrgyz_Kazakhstan", code : "ky-KZ" , mode: LanguageMode.RTL),
-                new Language( name : "Latvian_Latvia", code : "lv-LV" , mode: LanguageMode.LTR),
-                new Language( name : "Lithuanian_Lithuania", code : "lt-LT" , mode: LanguageMode.LTR),
-                new Language( name : "Macedonian_FYROM", code : "mk-MK" , mode: LanguageMode.LTR),
-                new Language( name : "Malay_Brunei", code : "ms-BN" , mode: LanguageMode.RTL),
-                new Language( name : "Malay_Malaysia", code : "ms-MY" , mode: LanguageMode.RTL),
-                new Language( name : "Marathi_India", code : "mr-IN" , mode: LanguageMode.LTR),
-                new Language( name : "Mongolian_Mongolia", code : "mn-MN" , mode: LanguageMode.LTR),
-                new Language( name : "NorwegianBokmål_Norway", code : "nb-NO" , mode: LanguageMode.LTR),
-                new Language( name : "NorwegianNynorsk_Norway", code : "nn-NO" , mode: LanguageMode.LTR),
-                new Language( name : "Polish_Poland", code : "pl-PL" , mode: LanguageMode.LTR),
-                new Language( name : "Portuguese_Brazil", code : "pt-BR" , mode: LanguageMode.LTR),
-                new Language( name : "Portuguese_Portugal", code : "pt-PT" , mode: LanguageMode.LTR),
-                new Language( name : "Punjabi_India", code : "pa-IN" , mode: LanguageMode.RTL),
-                new Language( name : "Romanian_Romania", code : "ro-RO" , mode: LanguageMode.LTR),
-                new Language( name : "Russian_Russia", code : "ru-RU" , mode: LanguageMode.LTR),
-                new Language( name : "Sanskrit_India", code : "sa-IN" , mode: LanguageMode.LTR),
-                new Language( name : "erbianCyrillic_Serbia", code : "Cy-sr-SP" , mode: LanguageMode.LTR),
-                new Language( name : "SerbianLatin_Serbia", code : "Lt-sr-SP" , mode: LanguageMode.LTR),
-                new Language( name : "Slovak_Slovakia", code : "sk-SK" , mode: LanguageMode.LTR),
-                new Language( name : "Slovenian_Slovenia", code : "sl-SI" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Argentina", code : "es-AR" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Bolivia", code : "es-BO" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Chile", code : "es-CL" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Colombia", code : "es-CO" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_CostaRica", code : "es-CR" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_DominicanRepublic", code : "es-DO" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Ecuador", code : "es-EC" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_ElSalvador", code : "es-SV" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Guatemala", code : "es-GT" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Honduras", code : "es-HN" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Mexico", code : "es-MX" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Nicaragua", code : "es-NI" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Panama", code : "es-PA" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Paraguay", code : "es-PY" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Peru", code : "es-PE" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_PuertoRico", code : "es-PR" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Spain", code : "es-ES" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Uruguay", code : "es-UY" , mode: LanguageMode.LTR),
-                new Language( name : "Spanish_Venezuela", code : "es-VE" , mode: LanguageMode.LTR),
-                new Language( name : "Swahili_Kenya", code : "sw-KE" , mode: LanguageMode.LTR),
-                new Language( name : "Swedish_Finland", code : "sv-FI" , mode: LanguageMode.LTR),
-                new Language( name : "Swedish_Sweden", code : "sv-SE" , mode: LanguageMode.LTR),
-                new Language( name : "Syriac_Syria", code : "syr-SY" , mode: LanguageMode.RTL),
-                new Language( name : "Tami_India", code : "ta-IN" , mode: LanguageMode.LTR),
-                new Language( name : "Tata_Russia", code : "tt-RU" , mode: LanguageMode.LTR),
-                new Language( name : "Telugu_India", code : "te-IN" , mode: LanguageMode.LTR),
-                new Language( name : "Thai_Thailand", code : "th-TH" , mode: LanguageMode.LTR),
-                new Language( name : "Turkish_Turkey", code : "tr-TR" , mode: LanguageMode.LTR),
-                new Language( name : "Ukrainian_Ukraine", code : "uk-UA" , mode: LanguageMode.LTR),
-                new Language( name : "Urdu_Pakistan", code : "ur-PK" , mode: LanguageMode.RTL),
-                new Language( name : "UzbekCyrillic_Uzbekistan", code : "Cy-uz-UZ" , mode: LanguageMode.LTR),
-                new Language( name : "UzbekLatin_Uzbekistan", code : "Lt-uz-UZ" , mode: LanguageMode.LTR),
-                new Language( name : "Vietnamese_Vietnam", code : "vi-VN", mode: LanguageMode.LTR)
-            };
-        }
-
-        #endregion
-
         /// <summary>
         /// the language code presented by Microsoft
         /// </summary>
@@ -169,7 +24,7 @@
         public string Name { get; }
 
         /// <summary>
-        /// get the mode of the language it RTL or LTR
+        /// get the mode of the language, RTL or LTR
         /// </summary>
         public LanguageMode Mode { get; }
 
@@ -184,34 +39,12 @@
         }
 
         /// <summary>
-        /// Get you a list of all supported Languages
+        /// determine if the given language has a default value
         /// </summary>
-        /// <returns>A list of Languages</returns>
-        public static IEnumerable<Language> GetLanguageList() => _languagesList;
-
-        /// <summary>
-        /// Find a language by the name
-        /// </summary>
-        /// <param name="name">the name of the language</param>
-        /// <returns>return the language, if nothing found will return null</returns>
-        public static Language GetByName(string name)
-            => _languagesList.FirstOrDefault(l => l.Name == name);
-
-        /// <summary>
-        /// Find a language by it code
-        /// </summary>
-        /// <param name="code">the code of the language</param>
-        /// <returns>return the language, if nothing found will return null</returns>
-        public static Language GetByCode(string code)
-            => _languagesList.FirstOrDefault(l => l.Code == code);
-
-        /// <summary>
-        /// Get the string representation of the language 
-        /// </summary>
-        /// <param name="language">the language to get the string representation for</param>
-        /// <returns>Return the Language that have the given name</returns>
-        public static Language GetByEnum(Languages language)
-            => _languagesList.FirstOrDefault(l => l.Name == language.ToString());
+        /// <param name="language">the language to check</param>
+        /// <returns>true if it has the default value false if not</returns>
+        public bool HasDefaultValue()
+            => HasDefaultValue(this);
 
         /// <summary>
         /// get the ENUM value of the current language objects
@@ -367,7 +200,7 @@
         /// <param name="obj">the object to compare to</param>
         /// <returns>true if equals</returns>
         public override bool Equals(object obj)
-            => obj is Language && Equals(obj as Language);
+            => Equals(obj);
 
         /// <summary>
         /// check if the given language is equal to this instant
@@ -376,7 +209,7 @@
         /// <param name="language">the language to compare to</param>
         /// <returns>true if equals</returns>
         public bool Equals(Language language)
-            => language != null && Code == language.Code && Name == language.Name;
+            => !language.HasDefaultValue() && Code == language.Code && Name == language.Name;
 
         /// <summary>
         /// get the HashCode
@@ -395,7 +228,7 @@
         /// </summary>
         /// <returns>string</returns>
         public override string ToString()
-            => $"Name : {Name}, Code : {Code}, Mode : {Mode}";
+            => HasDefaultValue() ? "default" : $"Name : {Name}, Code : {Code}, Mode : {Mode}";
 
         /// <summary>
         /// implement the equality operator
@@ -415,6 +248,295 @@
         public static bool operator !=(Language language1, Language language2)
             => !(language1 == language2);
 
+        /// <summary>
+        /// implement the equality operator
+        /// </summary>
+        /// <param name="language1"></param>
+        /// <param name="language2"></param>
+        /// <returns>true if equals</returns>
+        public static bool operator ==(Language language1, string languageCode)
+        {
+            var language2 = GetByCode(languageCode);
+
+            if (language2.HasDefaultValue())
+                throw new InvalidLanguageCode("the given language code is not valid, language not exist");
+
+            return EqualityComparer<Language>.Default.Equals(language1, language2);
+        }
+
+        /// <summary>
+        /// implement the non equality operator
+        /// </summary>
+        /// <param name="language1"></param>
+        /// <param name="language2"></param>
+        /// <returns>true not equals</returns>
+        public static bool operator !=(Language language1, string languageCode)
+            => !(language1 == languageCode);
+
         #endregion
+
+        #region implicit
+
+        /// <summary>
+        /// convert the language into a language code string
+        /// </summary>
+        /// <param name="language">the language to convert</param>
+        public static implicit operator string(Language language)
+        {
+            if (language.HasDefaultValue())
+                throw new InvalidLanguage("the given language instant doesn't have a value");
+
+            return language.Code;
+        }
+
+        /// <summary>
+        /// convert a language code given as string to a language
+        /// </summary>
+        /// <param name="langaugeCode">the code to get the language form it</param>
+        public static implicit operator Language(string langaugeCode)
+        {
+            var language = GetByCode(langaugeCode);
+
+            if (language.HasDefaultValue())
+                throw new InvalidLanguageCode(langaugeCode);
+
+            return language;
+        }
+        
+        #endregion
+    }
+
+    /// <summary>
+    /// the partial part of the <see cref="Language"/> that hold all the static functionalities
+    /// </summary>
+    public partial struct Language
+    {
+        #region Private static members
+
+        private static Language _currentLanguage;
+
+        private static Language _defaultLanguage;
+
+        private static readonly IEnumerable<Language> _languagesList;
+
+        static Language()
+        {
+            _languagesList = new HashSet<Language>
+            {
+                new Language( name : "Albanian_Albania", code : "sq-AL", mode: LanguageMode.LTR),
+                new Language( name : "Arabic_Algeria", code : "ar-DZ", mode: LanguageMode.RTL),
+                new Language( name : "Arabic_Bahrain", code : "ar-BH", mode: LanguageMode.RTL ),
+                new Language( name : "Arabic_Egypt", code : "ar-EG", mode: LanguageMode.RTL ),
+                new Language( name : "Arabic_Iraq", code : "ar-IQ", mode: LanguageMode.RTL ),
+                new Language( name : "Arabic_Jordan", code : "ar-JO", mode: LanguageMode.RTL ),
+                new Language( name : "Arabic_Kuwait", code : "ar-KW", mode: LanguageMode.RTL ),
+                new Language( name : "Arabic_Lebanon", code : "ar-LB", mode: LanguageMode.RTL ),
+                new Language( name : "Arabic_Libya", code : "ar-LY", mode: LanguageMode.RTL ),
+                new Language( name : "Arabic_Morocco", code : "ar-MA" , mode: LanguageMode.RTL),
+                new Language( name : "Arabic_Oman", code : "ar-OM" , mode: LanguageMode.RTL),
+                new Language( name : "Arabic_Qatar", code : "ar-QA" , mode: LanguageMode.RTL),
+                new Language( name : "Arabic_SaudiArabia", code : "ar-SA" , mode: LanguageMode.RTL),
+                new Language( name : "Arabic_Syria", code : "ar-SY" , mode: LanguageMode.RTL),
+                new Language( name : "Arabic_Tunisia", code : "ar-TN" , mode: LanguageMode.RTL),
+                new Language( name : "Arabic_UnitedArabEmirates", code : "ar-AE" , mode: LanguageMode.RTL),
+                new Language( name : "Arabic_Yemen", code : "ar-YE" , mode: LanguageMode.RTL),
+                new Language( name : "Armenian_Armenia", code : "hy-AM" , mode: LanguageMode.LTR),
+                new Language( name : "AzeriCyrillic_Azerbaijan", code : "Cy-az-AZ" , mode: LanguageMode.RTL),
+                new Language( name : "AzeriLatin_Azerbaijan", code : "Lt-az-AZ" , mode: LanguageMode.RTL),
+                new Language( name : "Basque_Basque", code : "eu-ES" , mode: LanguageMode.LTR),
+                new Language( name : "Belarusian_Belarus", code : "be-BY" , mode: LanguageMode.LTR),
+                new Language( name : "Bulgarian_Bulgaria", code : "bg-BG" , mode: LanguageMode.LTR),
+                new Language( name : "Catalan_Catalan", code : "ca-ES" , mode: LanguageMode.LTR),
+                new Language( name : "Chinese_China", code : "zh-CN" , mode: LanguageMode.LTR),
+                new Language( name : "Chinese_HongKongSAR", code : "zh-HK" , mode: LanguageMode.LTR),
+                new Language( name : "Chinese_MacauSAR", code : "zh-MO" , mode: LanguageMode.LTR),
+                new Language( name : "Chinese_Singapore", code : "zh-SG" , mode: LanguageMode.LTR),
+                new Language( name : "Chinese_Taiwan", code : "zh-TW" , mode: LanguageMode.LTR),
+                new Language( name : "Chinese_Simplified", code : "zh-CHS" , mode: LanguageMode.LTR),
+                new Language( name : "Chinese_Traditional", code : "zh-CHT" , mode: LanguageMode.LTR),
+                new Language( name : "Croatian_Croatia", code : "hr-HR" , mode: LanguageMode.LTR),
+                new Language( name : "Czech_CzechRepublic", code : "cs-CZ" , mode: LanguageMode.LTR),
+                new Language( name : "Danish_Denmark", code : "da-DK" , mode: LanguageMode.LTR),
+                new Language( name : "Dhivehi_Maldives", code : "div-MV" , mode: LanguageMode.RTL),
+                new Language( name : "Dutch_Belgium", code : "nl-BE" , mode: LanguageMode.LTR),
+                new Language( name : "Dutch_TheNetherlands", code : "nl-NL" , mode: LanguageMode.LTR),
+                new Language( name : "English_Australia", code : "en-AU" , mode: LanguageMode.LTR),
+                new Language( name : "English_Belize", code : "en-BZ" , mode: LanguageMode.LTR),
+                new Language( name : "English_Canada", code : "en-CA" , mode: LanguageMode.LTR),
+                new Language( name : "English_Caribbean", code : "en-CB" , mode: LanguageMode.LTR),
+                new Language( name : "English_Ireland", code : "en-IE" , mode: LanguageMode.LTR),
+                new Language( name : "English_Jamaica", code : "en-JM" , mode: LanguageMode.LTR),
+                new Language( name : "English_NewZealand", code : "en-NZ" , mode: LanguageMode.LTR),
+                new Language( name : "English_Philippines", code : "en-PH" , mode: LanguageMode.LTR),
+                new Language( name : "English_SouthAfrica", code : "en-ZA" , mode: LanguageMode.LTR),
+                new Language( name : "English_TrinidadAndTobago", code : "en-TT" , mode: LanguageMode.LTR),
+                new Language( name : "English_UnitedKingdom", code : "en-GB" , mode: LanguageMode.LTR),
+                new Language( name : "English_UnitedStates", code : "en-US" , mode: LanguageMode.LTR),
+                new Language( name : "English_Zimbabwe", code : "en-ZW" , mode: LanguageMode.LTR),
+                new Language( name : "Estonian_Estonia", code : "et-EE" , mode: LanguageMode.LTR),
+                new Language( name : "Faroese_FaroeIslands", code : "fo-FO" , mode: LanguageMode.LTR),
+                new Language( name : "Farsi_Iran", code : "fa-IR" , mode: LanguageMode.RTL),
+                new Language( name : "Finnish_Finland", code : "fi-FI" , mode: LanguageMode.LTR),
+                new Language( name : "French_Belgium", code : "fr-BE" , mode: LanguageMode.LTR),
+                new Language( name : "French_Canada", code : "fr-CA" , mode: LanguageMode.LTR),
+                new Language( name : "French_France", code : "fr-FR" , mode: LanguageMode.LTR),
+                new Language( name : "French_Luxembourg", code : "fr-LU" , mode: LanguageMode.LTR),
+                new Language( name : "French_Monaco", code : "fr-MC" , mode: LanguageMode.LTR),
+                new Language( name : "French_Switzerland", code : "fr-CH" , mode: LanguageMode.LTR),
+                new Language( name : "Galician_Galician", code : "gl-ES" , mode: LanguageMode.LTR),
+                new Language( name : "Georgian_Georgia", code : "ka-GE" , mode: LanguageMode.LTR),
+                new Language( name : "German_Austria", code : "de-AT" , mode: LanguageMode.LTR),
+                new Language( name : "German_Germany", code : "de-DE" , mode: LanguageMode.LTR),
+                new Language( name : "German_Liechtenstein", code : "de-LI" , mode: LanguageMode.LTR),
+                new Language( name : "German_Luxembourg", code : "de-LU" , mode: LanguageMode.LTR),
+                new Language( name : "German_Switzerland", code : "de-CH" , mode: LanguageMode.LTR),
+                new Language( name : "Greek_Greece", code : "el-GR" , mode: LanguageMode.LTR),
+                new Language( name : "Gujarati_India", code : "hi-IN" , mode: LanguageMode.LTR),
+                new Language( name : "Hindi_India", code : "he-IL" , mode: LanguageMode.LTR),
+                new Language( name : "Hungarian_Hungary", code : "hu-HU" , mode: LanguageMode.LTR),
+                new Language( name : "Icelandic_Iceland", code : "is-IS" , mode: LanguageMode.LTR),
+                new Language( name : "Indonesian_Indonesia", code : "id-ID" , mode: LanguageMode.LTR),
+                new Language( name : "Italian_Italy", code : "it-IT" , mode: LanguageMode.LTR),
+                new Language( name : "Italian_Switzerland", code : "it-CH" , mode: LanguageMode.LTR),
+                new Language( name : "Japanese_Japan", code : "ja-JP" , mode: LanguageMode.LTR),
+                new Language( name : "Kannada_India", code : "kn-IN" , mode: LanguageMode.LTR),
+                new Language( name : "Kazakh_Kazakhstan", code : "kk-KZ" , mode: LanguageMode.RTL),
+                new Language( name : "Konkani_India", code : "kok-IN" , mode: LanguageMode.LTR),
+                new Language( name : "Korean_Korea", code : "ko-KR" , mode: LanguageMode.LTR),
+                new Language( name : "Kyrgyz_Kazakhstan", code : "ky-KZ" , mode: LanguageMode.RTL),
+                new Language( name : "Latvian_Latvia", code : "lv-LV" , mode: LanguageMode.LTR),
+                new Language( name : "Lithuanian_Lithuania", code : "lt-LT" , mode: LanguageMode.LTR),
+                new Language( name : "Macedonian_FYROM", code : "mk-MK" , mode: LanguageMode.LTR),
+                new Language( name : "Malay_Brunei", code : "ms-BN" , mode: LanguageMode.RTL),
+                new Language( name : "Malay_Malaysia", code : "ms-MY" , mode: LanguageMode.RTL),
+                new Language( name : "Marathi_India", code : "mr-IN" , mode: LanguageMode.LTR),
+                new Language( name : "Mongolian_Mongolia", code : "mn-MN" , mode: LanguageMode.LTR),
+                new Language( name : "NorwegianBokmål_Norway", code : "nb-NO" , mode: LanguageMode.LTR),
+                new Language( name : "NorwegianNynorsk_Norway", code : "nn-NO" , mode: LanguageMode.LTR),
+                new Language( name : "Polish_Poland", code : "pl-PL" , mode: LanguageMode.LTR),
+                new Language( name : "Portuguese_Brazil", code : "pt-BR" , mode: LanguageMode.LTR),
+                new Language( name : "Portuguese_Portugal", code : "pt-PT" , mode: LanguageMode.LTR),
+                new Language( name : "Punjabi_India", code : "pa-IN" , mode: LanguageMode.RTL),
+                new Language( name : "Romanian_Romania", code : "ro-RO" , mode: LanguageMode.LTR),
+                new Language( name : "Russian_Russia", code : "ru-RU" , mode: LanguageMode.LTR),
+                new Language( name : "Sanskrit_India", code : "sa-IN" , mode: LanguageMode.LTR),
+                new Language( name : "erbianCyrillic_Serbia", code : "Cy-sr-SP" , mode: LanguageMode.LTR),
+                new Language( name : "SerbianLatin_Serbia", code : "Lt-sr-SP" , mode: LanguageMode.LTR),
+                new Language( name : "Slovak_Slovakia", code : "sk-SK" , mode: LanguageMode.LTR),
+                new Language( name : "Slovenian_Slovenia", code : "sl-SI" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Argentina", code : "es-AR" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Bolivia", code : "es-BO" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Chile", code : "es-CL" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Colombia", code : "es-CO" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_CostaRica", code : "es-CR" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_DominicanRepublic", code : "es-DO" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Ecuador", code : "es-EC" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_ElSalvador", code : "es-SV" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Guatemala", code : "es-GT" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Honduras", code : "es-HN" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Mexico", code : "es-MX" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Nicaragua", code : "es-NI" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Panama", code : "es-PA" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Paraguay", code : "es-PY" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Peru", code : "es-PE" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_PuertoRico", code : "es-PR" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Spain", code : "es-ES" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Uruguay", code : "es-UY" , mode: LanguageMode.LTR),
+                new Language( name : "Spanish_Venezuela", code : "es-VE" , mode: LanguageMode.LTR),
+                new Language( name : "Swahili_Kenya", code : "sw-KE" , mode: LanguageMode.LTR),
+                new Language( name : "Swedish_Finland", code : "sv-FI" , mode: LanguageMode.LTR),
+                new Language( name : "Swedish_Sweden", code : "sv-SE" , mode: LanguageMode.LTR),
+                new Language( name : "Syriac_Syria", code : "syr-SY" , mode: LanguageMode.RTL),
+                new Language( name : "Tami_India", code : "ta-IN" , mode: LanguageMode.LTR),
+                new Language( name : "Tata_Russia", code : "tt-RU" , mode: LanguageMode.LTR),
+                new Language( name : "Telugu_India", code : "te-IN" , mode: LanguageMode.LTR),
+                new Language( name : "Thai_Thailand", code : "th-TH" , mode: LanguageMode.LTR),
+                new Language( name : "Turkish_Turkey", code : "tr-TR" , mode: LanguageMode.LTR),
+                new Language( name : "Ukrainian_Ukraine", code : "uk-UA" , mode: LanguageMode.LTR),
+                new Language( name : "Urdu_Pakistan", code : "ur-PK" , mode: LanguageMode.RTL),
+                new Language( name : "UzbekCyrillic_Uzbekistan", code : "Cy-uz-UZ" , mode: LanguageMode.LTR),
+                new Language( name : "UzbekLatin_Uzbekistan", code : "Lt-uz-UZ" , mode: LanguageMode.LTR),
+                new Language( name : "Vietnamese_Vietnam", code : "vi-VN", mode: LanguageMode.LTR)
+            };
+        }
+
+        #endregion
+
+        /// <summary>
+        /// the Current language, this is the language that will be used to retrieve
+        /// the proper translation
+        /// </summary>
+        public static Language CurrentLanguage
+        {
+            get => _currentLanguage;
+            set
+            {
+                var tempVar = _currentLanguage;
+                _currentLanguage = value;
+                CurrentLanguageChanged?.Invoke(value, new LanguageChangedEventArgs(tempVar, value));
+            }
+        }
+
+        /// <summary>
+        /// the default language of the application, used as the fall back value
+        /// </summary>
+        public static Language DefaultLanguage
+        {
+            get => _defaultLanguage;
+            set
+            {
+                var tempVar = _defaultLanguage;
+                _defaultLanguage = value;
+                DefaultLanguageChanged?.Invoke(value, new LanguageChangedEventArgs(tempVar, value));
+            }
+        }
+
+        /// <summary>
+        /// event raised when the CurrentLanguage is changed
+        /// </summary>
+        public static event EventHandler<LanguageChangedEventArgs> CurrentLanguageChanged;
+
+        /// <summary>
+        /// event raised when the DefaultLanguage is changed
+        /// </summary>
+        public static event EventHandler<LanguageChangedEventArgs> DefaultLanguageChanged;
+
+        /// <summary>
+        /// determine if the given language has a default value
+        /// </summary>
+        /// <param name="language">the language to check</param>
+        /// <returns>true if it has the default value false if not</returns>
+        public static bool HasDefaultValue(Language language)
+            => !(language.Code.IsValid() || language.Name.IsValid());
+
+        /// <summary>
+        /// Get you a list of all supported Languages
+        /// </summary>
+        /// <returns>A list of Languages</returns>
+        public static IEnumerable<Language> GetLanguageList() => _languagesList;
+
+        /// <summary>
+        /// Find a language by the name
+        /// </summary>
+        /// <param name="name">the name of the language</param>
+        /// <returns>return the language, if nothing found will return null</returns>
+        public static Language GetByName(string name)
+            => _languagesList.FirstOrDefault(l => l.Name == name);
+
+        /// <summary>
+        /// Find a language by it code
+        /// </summary>
+        /// <param name="code">the code of the language</param>
+        /// <returns>return the language, if nothing found will return null</returns>
+        public static Language GetByCode(string code)
+            => _languagesList.FirstOrDefault(l => l.Code == code);
+
+        /// <summary>
+        /// Get the string representation of the language 
+        /// </summary>
+        /// <param name="language">the language to get the string representation for</param>
+        /// <returns>Return the Language that have the given name</returns>
+        public static Language GetByEnum(Languages language)
+            => _languagesList.FirstOrDefault(l => l.Name == language.ToString());
     }
 }

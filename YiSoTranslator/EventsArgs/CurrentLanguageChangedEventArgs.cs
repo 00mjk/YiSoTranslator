@@ -19,7 +19,7 @@
         public Language NewLanguage { get; }
 
         /// <summary>
-        /// constructor for LanguageChangedEventArgs
+        /// construct a new instant of <see cref="LanguageChangedEventArgs"/>
         /// </summary>
         /// <param name="oldLanguage">the old Language</param>
         /// <param name="newLanguage">the new Language</param>

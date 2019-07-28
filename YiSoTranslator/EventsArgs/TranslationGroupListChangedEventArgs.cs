@@ -20,12 +20,12 @@
         /// <summary>
         /// the old item in the list null in case of ADD
         /// </summary>
-        public TranslationsGroup OldRecord { get; }
+        public ITranslationsGroup OldRecord { get; }
 
         /// <summary>
         /// the new item in the list, null in case of Delete
         /// </summary>
-        public TranslationsGroup NewRecord { get; }
+        public ITranslationsGroup NewRecord { get; }
 
         /// <summary>
         /// constructor
@@ -35,7 +35,7 @@
         /// <param name="oldRecord">the old item in the list</param>
         /// <param name="newRecord">the new item in the list</param>
         public TranslationsGroupsListChangedEventArgs
-            (ListChangedType type, int changedIndex, TranslationsGroup oldRecord, TranslationsGroup newRecord)
+            (ListChangedType type, int changedIndex, ITranslationsGroup oldRecord, ITranslationsGroup newRecord)
         {
             OperationType = type;
             ChangedIndex = changedIndex;

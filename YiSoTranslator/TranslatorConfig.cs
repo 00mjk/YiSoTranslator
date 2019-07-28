@@ -10,8 +10,8 @@
         /// </summary>
         public static void Initialize()
         {
-            LanguageSetting.Instant.DefaultLanguage = GetDefaultLanguage();
-            LanguageSetting.Instant.CurrentLanguage = GetCurrentLanguage();
+            Language.DefaultLanguage = GetDefaultLanguage();
+            Language.CurrentLanguage = GetCurrentLanguage();
         }
 
         /// <summary>
@@ -41,14 +41,14 @@
         public static void ChangeCurrentLanguage(Language language)
         {
             //ToDo: implement your own logic for storing the Current language
-            LanguageSetting.Instant.CurrentLanguage = language;
+            Language.CurrentLanguage = language;
         }
 
         /// <summary>
         /// Get the Translation Provider
         /// </summary>
-        /// <returns>instance of <see cref="IYiSoTranslationProvider"/>the translation Provider</returns>
-        public static IYiSoTranslationProvider GetTranslationProvider()
+        /// <returns>instance of <see cref="IYiSoTranslationsProvider"/>the translation Provider</returns>
+        public static IYiSoTranslationsProvider GetTranslationProvider()
         {
             //ToDo: Add reference to the provider you need to work with
             return null;
@@ -57,20 +57,20 @@
         /// <summary>
         /// Use this method to add translations at run time
         /// </summary>
-        /// <param name="manager">the manager on the Translator Object</param>
-        public static void AddTranslations(TranslationsGroupManager manager)
+        /// <param name="provider">the manager on the Translator Object</param>
+        public static void AddTranslations(IYiSoTranslationsProvider provider)
         {
-            manager.Add(new TranslationsGroup("Email_text"))
+            provider.Add(new TranslationsGroup("Email_text"))
                 .Add(new Translation(Languages.English_UnitedStates.Code(), "Enter your Email!"))
                 .Add(new Translation(Languages.French_France.Code(), "Entrer votre Email!"))
                 .Add(new Translation(Languages.Arabic_Morocco.Code(), "ادخل الايميل الخاص بك"));
 
-            manager.Add(new TranslationsGroup("phone_text"))
+            provider.Add(new TranslationsGroup("phone_text"))
                 .Add(new Translation(Languages.English_UnitedStates.Code(), "Enter your phone Number!"))
                 .Add(new Translation(Languages.French_France.Code(), "Entrer votre numéro de téléphone!"))
                 .Add(new Translation(Languages.Arabic_Morocco.Code(), "ادخل رقم الهاتف الخاص بك"));
 
-            manager.SaveChanges();
+            provider.SaveChanges();
         }
     }
 }

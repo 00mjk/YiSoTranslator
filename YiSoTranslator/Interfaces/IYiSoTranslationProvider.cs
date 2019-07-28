@@ -2,16 +2,25 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// interface to describe the IYiSoTranslationProvider functionality
     /// </summary>
-    public interface IYiSoTranslationProvider
+    public interface IYiSoTranslationsProvider
     {
+        /// <summary>
+        /// the name of the provider, should be unique
+        /// </summary>
+        /// <remarks>
+        /// check for the list of available providers to check if you have a unique name
+        /// </remarks>
+        string Name { get; }
+        
         /// <summary>
         /// return the list of translations from the dataSource
         /// </summary>
-        IEnumerable<TranslationsGroup> TranslationsGroupsList { get; }
+        IEnumerable<ITranslationsGroup> TranslationsGroupsList { get; }
 
         /// <summary>
         /// the count of the items in the list
@@ -32,13 +41,13 @@
         /// Add the translations group to the list
         /// </summary>
         /// <param name="translationsGroup">translation group to be added</param>
-        TranslationsGroup Add(TranslationsGroup translationsGroup);
+        ITranslationsGroup Add(ITranslationsGroup translationsGroup);
 
         /// <summary>
         /// Add the translations groups to the list
         /// </summary>
         /// <param name="translationsGroups">translation groups to be added</param>
-        void AddRange(params TranslationsGroup[] translationsGroups);
+        void AddRange(params ITranslationsGroup[] translationsGroups);
 
         /// <summary>
         /// update the old TranslationGroup name with the new name
@@ -46,15 +55,16 @@
         /// <param name="oldTranslationsGroupName">the old translation Croup name</param>
         /// <param name="newTranslationsGroupName">the new translation Group</param>
         /// <returns>the updated TranslationGroup</returns>
-        TranslationsGroup Update(string oldTranslationsGroupName, string newTranslationsGroupName);
+        ITranslationsGroup Update(string oldTranslationsGroupName, string newTranslationsGroupName);
 
         /// <summary>
-        /// update the old TranslationGroup name with the new name
+        /// update the translations group with the new value,
+        /// the old translation group will be retrieved using the Name of the passed in translations group
         /// </summary>
-        /// <param name="oldTranslationGroup">the old translation Croup name</param>
-        /// <param name="newTranslationGroup">the new translation Group</param>
-        /// <returns>the updated TranslationGroup</returns>
-        TranslationsGroup Update(TranslationsGroup oldTranslationGroup, TranslationsGroup newTranslationGroup);
+        /// <param name="newTranslationGroup">the updated translations group</param>
+        /// <returns>updated version of the translation group</returns>
+        /// <exception cref="TranslationsGroupNotExistException">the no translation group with the given name has been fond</exception>
+        ITranslationsGroup Update(ITranslationsGroup newTranslationGroup);
 
         /// <summary>
         /// delete the translations Group from the list
@@ -62,7 +72,7 @@
         /// <param name="item">translation group to be removed</param>
         /// <returns>true if the item deleted, false if not</returns>
         /// <exception cref="TranslationsGroupNotExistException">if the translation group not exist</exception>
-        bool Remove(TranslationsGroup item);
+        bool Remove(ITranslationsGroup item);
 
         /// <summary>
         /// delete the translations Group from the list
@@ -96,26 +106,7 @@
         /// save the translations to the dataSource
         /// </summary>
         /// <returns>true if data is saved, false if not</returns>
-        System.Threading.Tasks.Task<bool> SaveChangesAsync();
-
-        /// <summary>
-        /// Export the translations to the file
-        /// </summary>
-        /// <param name="file">file where translations will be exported</param>
-        bool SaveToFile(IYiSoTranslationFile file);
-
-        /// <summary>
-        /// Export the translations to the file 
-        /// </summary>
-        /// <param name="file">file where translations will be exported</param>
-        System.Threading.Tasks.Task<bool> SaveToFileAsync(IYiSoTranslationFile file);
-
-        /// <summary>
-        /// get the list of translations from the File and 
-        /// populate the database of translations with the data
-        /// </summary>
-        /// <param name="file">the file to read the translations from</param>
-        void ReadFromFile(IYiSoTranslationFile file);
+        Task<bool> SaveChangesAsync();
 
         /// <summary>
         /// check if there is a translationsGroup with the given name
@@ -129,27 +120,27 @@
         /// </summary>
         /// <param name="name">the name of the translations group</param>
         /// <returns>the translation Group if exist, null if nothing found</returns>
-        TranslationsGroup Find(string name);
+        ITranslationsGroup Find(string name);
 
         /// <summary>
         /// look for a translations group in the list by a predicate
         /// </summary>
         /// <param name="predicate">the predicate to look with</param>
         /// <returns>the list of translations Group if exist, null if nothing found</returns>
-        IEnumerable<TranslationsGroup> Find(Func<TranslationsGroup, bool> predicate);
+        IEnumerable<ITranslationsGroup> Find(Func<ITranslationsGroup, bool> predicate);
 
         /// <summary>
         /// determine whether the element exist in the list
         /// </summary>
         /// <param name="item">the TranslationsGroup to look for</param>
         /// <returns>true if exist, false if not </returns>
-        bool Contains(TranslationsGroup item);
+        bool Contains(ITranslationsGroup item);
 
         /// <summary>
         /// get the index of the given item
         /// </summary>
         /// <param name="item">the translation Group</param>
         /// <returns>the index</returns>
-        int IndexOf(TranslationsGroup item);
+        int IndexOf(ITranslationsGroup item);
     }
 }

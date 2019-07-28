@@ -5,17 +5,19 @@ using System.Threading.Tasks;
 
 namespace YiSoTranslator.Test
 {
-    public class InMemoryTranslationProvider : IYiSoTranslationProvider
+    public class InMemoryTranslationProvider : IYiSoTranslationsProvider
     {
         private readonly InMemoryProvider _db;
         private bool _unsavedChanges;
 
         #region Public Prop
 
-        public IEnumerable<TranslationsGroup> TranslationsGroupsList
+        public IEnumerable<ITranslationsGroup> TranslationsGroupsList
              => _db.TranslationsGroups;
 
         public int Count => _db.TranslationsGroups.Count;
+
+        public string Name => "InMemoryProvider";
 
         public event EventHandler<TranslationsGroupsListChangedEventArgs> TranslationsGroupsListChanged;
 
@@ -40,7 +42,7 @@ namespace YiSoTranslator.Test
         /// </summary>
         /// <param name="name">the name of the translation group</param>
         /// <returns>the translation Group if exist, null if nothing found</returns>
-        public TranslationsGroup Find(string name)
+        public ITranslationsGroup Find(string name)
         {
             return _db.TranslationsGroups.FirstOrDefault(t => t.Name.ToLower() == name.ToLower());
         }
@@ -50,7 +52,7 @@ namespace YiSoTranslator.Test
         /// </summary>
         /// <param name="predicate">the predicate to look with</param>
         /// <returns>the list of translation Group if exist, null if nothing found</returns>
-        public IEnumerable<TranslationsGroup> Find(Func<TranslationsGroup, bool> predicate)
+        public IEnumerable<ITranslationsGroup> Find(Func<ITranslationsGroup, bool> predicate)
         {
             return _db.TranslationsGroups.Where(predicate);
         }
@@ -60,7 +62,7 @@ namespace YiSoTranslator.Test
         /// </summary>
         /// <param name="item">the translation Group</param>
         /// <returns>the index</returns>
-        public int IndexOf(TranslationsGroup item)
+        public int IndexOf(ITranslationsGroup item)
         {
             return _db.TranslationsGroups.IndexOf(item);
         }
@@ -70,7 +72,7 @@ namespace YiSoTranslator.Test
         /// </summary>
         /// <param name="item">the TranslationGroup to look for</param>
         /// <returns>true if exist, false if not </returns>
-        public bool Contains(TranslationsGroup item)
+        public bool Contains(ITranslationsGroup item)
         {
             return _db.TranslationsGroups.Contains(item);
         }
@@ -98,7 +100,7 @@ namespace YiSoTranslator.Test
         /// </summary>
         /// <param name="translationGroup">translation group to be added</param>
         /// <exception cref="TranslationGroupAlreadyExistException">if the translation group Already Exist</exception>
-        public TranslationsGroup Add(TranslationsGroup translationGroup)
+        public ITranslationsGroup Add(ITranslationsGroup translationGroup)
         {
             var tg = Find(translationGroup.Name);
 
@@ -116,7 +118,7 @@ namespace YiSoTranslator.Test
         /// Add the translation groups to the list, only non existing one will be add, others will be escaped
         /// </summary>
         /// <param name="translationGroups">translation groups to be added</param>
-        public void AddRange(params TranslationsGroup[] translationGroups)
+        public void AddRange(params ITranslationsGroup[] translationGroups)
         {
             foreach (var item in translationGroups)
             {
@@ -135,7 +137,7 @@ namespace YiSoTranslator.Test
         /// <returns>the updated TranslationGroup</returns>
         /// <exception cref="TranslationGroupNotExistException">if the old translation group not exist</exception>
         /// <exception cref="TranslationGroupAlreadyExistException">if the new translation group Already exist</exception>
-        public TranslationsGroup Update(string oldTranslationGroupName, string newTranslationGroupName)
+        public ITranslationsGroup Update(string oldTranslationGroupName, string newTranslationGroupName)
         {
             var old = Find(oldTranslationGroupName)
                 ?? throw new TranslationsGroupNotExistException(oldTranslationGroupName);
@@ -157,7 +159,7 @@ namespace YiSoTranslator.Test
         /// <param name="item">translation group to be removed</param>
         /// <returns>true if the item deleted, false if not</returns>
         /// <exception cref="TranslationGroupNotExistException">if the translation group not exist</exception>
-        public bool Remove(TranslationsGroup item)
+        public bool Remove(ITranslationsGroup item)
             => Remove(item.Name);
 
         /// <summary>
@@ -193,26 +195,17 @@ namespace YiSoTranslator.Test
         /// <param name="index">index where the change occur</param>
         /// <param name="oldRecord">the old record</param>
         /// <param name="newRecord">the new record</param>
-        private void OnDataChanged(ListChangedType listChangedType, int index, TranslationsGroup oldRecord, TranslationsGroup newRecord)
+        private void OnDataChanged(ListChangedType listChangedType, int index, ITranslationsGroup oldRecord, ITranslationsGroup newRecord)
         {
             _unsavedChanges = true;
             TranslationsGroupsListChanged?
                 .Invoke(this, new TranslationsGroupsListChangedEventArgs(listChangedType, index, oldRecord, newRecord));
         }
 
-        public bool SaveToFile(IYiSoTranslationFile file)
-        {
-            return true;
-        }
-
-        public void ReadFromFile(IYiSoTranslationFile file)
-        {
-        }
-
         public bool IsExist(string name)
             => _db.TranslationsGroups.Any(t => t.Name == name);
 
-        public TranslationsGroup Update(TranslationsGroup oldTranslationGroup, TranslationsGroup newTranslationGroup)
+        public ITranslationsGroup Update(ITranslationsGroup oldTranslationGroup, ITranslationsGroup newTranslationGroup)
         {
             var old = Find(oldTranslationGroup.Name)
                 ?? throw new TranslationsGroupNotExistException(oldTranslationGroup.Name);
@@ -231,15 +224,23 @@ namespace YiSoTranslator.Test
         public Task<bool> SaveChangesAsync()
             => Task.Run(() => SaveChanges());
 
-        public Task<bool> SaveToFileAsync(IYiSoTranslationFile file)
-            => Task.Run(() => SaveToFile(file));
-
         public void Reload(bool discardChanges = false)
         {
             if (_unsavedChanges && !discardChanges)
                 throw new UnsavedChangesExceptions();
 
             _db.Reload();
+        }
+
+        public ITranslationsGroup Update(ITranslationsGroup newTranslationGroup)
+        {
+            var old = Find(newTranslationGroup.Name)
+                ?? throw new TranslationsGroupNotExistException(newTranslationGroup.Name);
+
+            _db.TranslationsGroups[IndexOf(old)] = newTranslationGroup;
+
+            OnDataChanged(ListChangedType.Update, IndexOf(old), old, newTranslationGroup);
+            return old;
         }
 
         #endregion

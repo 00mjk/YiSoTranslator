@@ -217,6 +217,42 @@ namespace YiSoTranslator
     #region Language Exceptions
 
     /// <summary>
+    /// Exception for Invalid Language
+    /// </summary>
+    [DebuggerStepThrough]
+    public class InvalidLanguage : YiSoTranslatorExceptions
+    {
+        /// <summary>
+        /// create an instant of he exception with the given message
+        /// </summary>
+        /// <param name="message">the exception message</param>
+        public InvalidLanguage(string message)
+            : base (message)
+        {
+
+        }
+
+        /// <summary>
+        /// default constructor
+        /// </summary>
+        public InvalidLanguage()
+            : this($"the language is not exist")
+        {
+
+        }
+
+        /// <summary>
+        /// constructor with Language
+        /// </summary>
+        /// <param name="LanguageName">the language name</param>
+        public InvalidLanguage(Language Language)
+            : this()
+        {
+
+        }
+    }
+
+    /// <summary>
     /// Exception for Invalid Language Code
     /// </summary>
     [DebuggerStepThrough]

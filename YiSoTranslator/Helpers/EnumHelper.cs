@@ -12,8 +12,14 @@
         /// <param name="language">the language to get the code for</param>
         /// <returns>the language code</returns>
         public static string Code(this Languages language)
-        {
-            return Language.GetByEnum(language).Code;
-        }
+            => Language.GetByEnum(language).Code;
+
+        /// <summary>
+        /// get the language of the ENUM
+        /// </summary>
+        /// <param name="language">the language to get the language for</param>
+        /// <returns>the language</returns>
+        public static Language ToLanguage(this Languages language)
+            => Language.GetByEnum(language);
     }
 }

@@ -8,7 +8,7 @@ namespace YiSoTranslator.Test
         /// <summary>
         /// the collection of translation groups
         /// </summary>
-        public IList<TranslationsGroup> TranslationsGroups { get; set; }
+        public IList<ITranslationsGroup> TranslationsGroups { get; set; }
 
         /// <summary>
         /// Event raised when the list is changed
@@ -47,7 +47,7 @@ namespace YiSoTranslator.Test
                 .Add(new Translation(Languages.Chinese_China.Code(), "你好"))
                 .Add(new Translation(Languages.French_France.Code(), "Salut"));
 
-            TranslationsGroups = new List<TranslationsGroup>()
+            TranslationsGroups = new List<ITranslationsGroup>()
             {
                 tg
             };
