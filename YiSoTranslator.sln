@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.329
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YiSoTranslator", "YiSoTranslator\YiSoTranslator.csproj", "{4FB9CAE7-2558-4619-BEB3-C99E8DC3563A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YiSoTranslator", "YiSoTranslator\YiSoTranslator.csproj", "{4FB9CAE7-2558-4619-BEB3-C99E8DC3563A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YiSoTranslator.Test", "YiSoTranslator.Test\YiSoTranslator.Test.csproj", "{4781EA09-B05F-4E7C-8971-FC5FB026ADE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YiSoTranslator.Test", "YiSoTranslator.Test\YiSoTranslator.Test.csproj", "{4781EA09-B05F-4E7C-8971-FC5FB026ADE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YiSoTranslator.Sample", "YiSoTranslator.Sample\YiSoTranslator.Sample.csproj", "{6622B974-E976-4010-9E4C-DE73A29AD7C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4781EA09-B05F-4E7C-8971-FC5FB026ADE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4781EA09-B05F-4E7C-8971-FC5FB026ADE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4781EA09-B05F-4E7C-8971-FC5FB026ADE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6622B974-E976-4010-9E4C-DE73A29AD7C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6622B974-E976-4010-9E4C-DE73A29AD7C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6622B974-E976-4010-9E4C-DE73A29AD7C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6622B974-E976-4010-9E4C-DE73A29AD7C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

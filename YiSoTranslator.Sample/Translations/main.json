@@ -1,0 +1,61 @@
+[
+  {
+    "Name": "Hello_text",
+    "TranslationsList": [
+      {
+        "LanguageCode": "en-US",
+        "Value": "Hello there"
+      },
+      {
+        "LanguageCode": "es-ES",
+        "Value": "Hola"
+      },
+      {
+        "LanguageCode": "ar-MA",
+        "Value": "مرحبا"
+      },
+      {
+        "LanguageCode": "zh-CN",
+        "Value": "你好"
+      },
+      {
+        "LanguageCode": "fr-FR",
+        "Value": "Salut"
+      }
+    ]
+  },
+  {
+    "Name": "Email_text",
+    "TranslationsList": [
+      {
+        "LanguageCode": "en-US",
+        "Value": "Entre your email"
+      },
+      {
+        "LanguageCode": "ar-MA",
+        "Value": "ادخل الاميل الخاص بك"
+      },
+      {
+        "LanguageCode": "fr-FR",
+        "Value": "Entre votre mail"
+      }
+    ]
+  },
+  {
+    "Name": "phone_text",
+    "TranslationsList": [
+      {
+        "LanguageCode": "en-US",
+        "Value": "Entre you phone"
+      },
+      {
+        "LanguageCode": "ar-MA",
+        "Value": "ادحل رقم الهاتف"
+      },
+      {
+        "LanguageCode": "fr-FR",
+        "Value": "Entre voter telephone"
+      }
+    ]
+  }
+]

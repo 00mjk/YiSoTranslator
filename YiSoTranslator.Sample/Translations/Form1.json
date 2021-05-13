@@ -1,0 +1,29 @@
+[
+  {
+    "Name": "Hello_text",
+    "TranslationsList": [
+      {
+        "LanguageCode": "en-US",
+        "Value": "Hello Fom Form1.json"
+      }
+    ]
+  },
+  {
+    "Name": "open_text",
+    "TranslationsList": [
+      {
+        "LanguageCode": "en-GB",
+        "Value": "open !"
+      }
+    ]
+  },
+  {
+    "Name": "Email_text",
+    "TranslationsList": [
+      {
+        "LanguageCode": "en-US",
+        "Value": "Email"
+      }
+    ]
+  }
+]
